@@ -1,3 +1,7 @@
-<p>
-  dog works!
-</p>
+<ng-template [ngIf]="auth.loggedIn">
+  <ng-template [ngIf]="pageTitle">
+    <h1>{{ pageTitle }}</h1>
+    <img [src]="dog.image">
+    <p [innerHTML]="dog.description"></p>
+  </ng-template>
+</ng-template>

@@ -12,6 +12,12 @@ import { AuthService } from '../../auth/auth.service';
     .loading {
       line-height: 31px;
     }
+    .home-link {
+      color: #212529;
+    }
+    .home-link:hover {
+      text-decoration: none;
+    }
   `]
 })
 export class HeaderComponent implements OnInit {
