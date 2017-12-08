@@ -24,6 +24,9 @@ export class AuthService {
   // Create a stream of logged in status to communicate throughout app
   loggedIn: boolean;
   loggedIn$ = new BehaviorSubject<boolean>(this.loggedIn);
+  // Create a stream of Firebase authentication status to communicate throughout app
+  loggedInFirebase: boolean;
+  loggedInFirebase$ = new BehaviorSubject<boolean>(this.loggedInFirebase);
   // Subscribe to the Firebase token stream
   firebaseSub: Subscription;
 
@@ -38,7 +41,7 @@ export class AuthService {
 
     if (this.tokenValid) {
       this.userProfile = JSON.parse(lsProfile);
-      this.setLoggedIn(null);
+      this.setLoggedIn(true);
       this._getFirebaseToken(lsToken);
     } else if (!this.tokenValid && lsProfile) {
       this.logout();
@@ -49,6 +52,12 @@ export class AuthService {
     // Update login status subject
     this.loggedIn$.next(value);
     this.loggedIn = value;
+  }
+
+  setLoggedInFirebase(value: boolean) {
+    // Update Firebase login status subject
+    this.loggedInFirebase$.next(value);
+    this.loggedInFirebase = value;
   }
 
   login(redirect?: string) {
@@ -97,6 +106,8 @@ export class AuthService {
     // Set profile information
     localStorage.setItem('profile', JSON.stringify(profile));
     this.userProfile = profile;
+    // Session set; set loggedIn
+    this.setLoggedIn(true);
     // Get Firebase token
     this._getFirebaseToken(authResult.accessToken);
   }
@@ -117,8 +128,8 @@ export class AuthService {
   private _firebaseAuth(tokenObj) {
     this.afAuth.auth.signInWithCustomToken(tokenObj.firebaseToken)
       .then(res => {
-        // Emit loggedIn$ subject with true value
-        this.setLoggedIn(true);
+        // Emit loggedInFirebase$ subject with true value
+        this.setLoggedInFirebase(true);
         this.firebaseSub.unsubscribe();
         console.log('Successfully authenticated with Firebase!');
       })
@@ -144,6 +155,7 @@ export class AuthService {
     this.userProfile = undefined;
     this.setLoggedIn(false);
     // Sign out of Firebase
+    this.setLoggedInFirebase(false);
     this.afAuth.auth.signOut();
     // Return to homepage
     if (noRedirect !== true) {
