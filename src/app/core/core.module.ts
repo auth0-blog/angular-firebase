@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { CommentsComponent } from './comments/comments.component';
 import { CommentFormComponent } from './comments/comment-form/comment-form.component';
+import { ApiService } from './api.service';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ export class CoreModule {
       ngModule: CoreModule,
       providers: [
         Title,
-        DatePipe
+        DatePipe,
+        ApiService
       ]
     };
   }

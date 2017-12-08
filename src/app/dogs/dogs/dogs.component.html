@@ -1,3 +1,15 @@
-<p>
-  dog works!
+<p *ngIf="auth.loggedIn === undefined" class="lead">
+  Please log in.
 </p>
+
+<ng-template [ngIf]="auth.loggedIn">
+  <section class="list-group" *ngIf="(dogsList$ | async)">
+    <a
+      *ngFor="let dog of dogsList$ | async" class="list-group-item"
+      [routerLink]="['/dog', dog.rank]"
+      class="list-group-item list-group-item-action">
+      <span class="badge badge-primary badge-pill">{{ dog.rank }}</span>
+      {{ dog.breed }}
+    </a>
+  </section>
+</ng-template>

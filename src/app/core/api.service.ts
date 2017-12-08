@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ApiService {
-  private _API = 'http://localhost:1337/api/';
+  private _API = 'http://localhost:1337/api';
   private _accessToken = localStorage.getItem('access_token');
 
   constructor(
