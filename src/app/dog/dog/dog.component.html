@@ -1,7 +1,15 @@
 <ng-template [ngIf]="auth.loggedIn">
   <ng-template [ngIf]="pageTitle">
-    <h1>{{ pageTitle }}</h1>
-    <img [src]="dog.image">
+    <h1 class="text-center">{{ pageTitle }}</h1>
+    <div class="text-center pt-2">
+      <img [src]="dog.image">
+      <p class="text-secondary">
+        <em>{{ dog.group }} Group</em>
+      </p>
+    </div>
     <p [innerHTML]="dog.description"></p>
+    <p class="text-center">
+      <a class="btn btn-primary" [href]="dog.link">{{ dog.breed }} AKC Info</a>
+    </p>
   </ng-template>
 </ng-template>

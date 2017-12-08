@@ -34,18 +34,18 @@ export class AuthService {
     private router: Router,
     private afAuth: AngularFireAuth,
     private http: HttpClient) {
-    // If authenticated, set local profile property and get new Firebase token.
-    // If not authenticated but there are still items n localStorage, log out.
-    const lsProfile = localStorage.getItem('profile');
-    const lsToken = localStorage.getItem('access_token');
+      // If authenticated, set local profile property and get new Firebase token.
+      // If not authenticated but there are still items n localStorage, log out.
+      const lsProfile = localStorage.getItem('profile');
+      const lsToken = localStorage.getItem('access_token');
 
-    if (this.tokenValid) {
-      this.userProfile = JSON.parse(lsProfile);
-      this.setLoggedIn(true);
-      this._getFirebaseToken(lsToken);
-    } else if (!this.tokenValid && lsProfile) {
-      this.logout();
-    }
+      if (this.tokenValid) {
+        this.userProfile = JSON.parse(lsProfile);
+        this.setLoggedIn(true);
+        this._getFirebaseToken(lsToken);
+      } else if (!this.tokenValid && lsProfile) {
+        this.logout();
+      }
   }
 
   setLoggedIn(value: boolean) {
