@@ -4,9 +4,12 @@
     </div>
     <div class="ml-3">
       <button
-        *ngIf="!auth.loggedIn"
+        *ngIf="auth.loggedIn === undefined"
         class="btn btn-primary btn-sm"
         (click)="auth.login()">Log In</button>
+      <span *ngIf="auth.loggedIn === null">
+        <small>Logging in...</small>
+      </span>
       <span *ngIf="auth.loggedIn">
         <img [src]="auth.userProfile.picture">
         <small>{{ auth.userProfile.name }}</small>

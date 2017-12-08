@@ -38,6 +38,7 @@ export class AuthService {
 
     if (this.tokenValid) {
       this.userProfile = JSON.parse(lsProfile);
+      this.setLoggedIn(null);
       this._getFirebaseToken(lsToken);
     } else if (!this.tokenValid && lsProfile) {
       this.logout();
@@ -63,10 +64,12 @@ export class AuthService {
     this._auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
+        this.setLoggedIn(null);
         this._getProfile(authResult);
       } else if (err) {
         this._clearRedirect();
         this.router.navigate(['/']);
+        this.setLoggedIn(false);
         console.error(`Error authenticating: ${err.error}`);
       }
     });
@@ -114,7 +117,7 @@ export class AuthService {
   private _firebaseAuth(tokenObj) {
     this.afAuth.auth.signInWithCustomToken(tokenObj.firebaseToken)
       .then(res => {
-        // Emit loggedIn$ subject
+        // Emit loggedIn$ subject with true value
         this.setLoggedIn(true);
         this.firebaseSub.unsubscribe();
         console.log('Successfully authenticated with Firebase!');
