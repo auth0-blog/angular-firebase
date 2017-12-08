@@ -1,13 +1,13 @@
 <nav class="nav justify-content-between mt-2 mx-2 mb-3">
     <div class="d-flex align-items-center">
-      <strong class="mr-1">Popular Dogs ❤</strong>
+      <strong class="mr-1"><a routerLink="/">Popular Dogs ❤</a></strong>
     </div>
     <div class="ml-3">
       <button
         *ngIf="auth.loggedIn === undefined"
         class="btn btn-primary btn-sm"
         (click)="auth.login()">Log In</button>
-      <span *ngIf="auth.loggedIn === null">
+      <span *ngIf="auth.loggedIn === null" class="loading">
         <small>Logging in...</small>
       </span>
       <span *ngIf="auth.loggedIn">

@@ -9,8 +9,8 @@ import { AuthService } from '../../auth/auth.service';
       border-radius: 100px;
       width: 30px;
     }
-    .active {
-      font-weight: bold;
+    .loading {
+      line-height: 31px;
     }
   `]
 })
