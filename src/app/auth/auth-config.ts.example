@@ -6,13 +6,6 @@ interface AuthConfig {
   audience: string;
   redirect: string;
   scope: string;
-  firebase: {
-    apiKey: string;
-    authDomain: string;
-    databaseURL: string;
-    projectId: string;
-    storageBucket: string;
-  };
 }
 
 export const AUTH: AuthConfig = {
@@ -20,13 +13,6 @@ export const AUTH: AuthConfig = {
   clientDomain: '<AUTH0_DOMAIN>', // e.g., you.auth0.com
   audience: '<AUTH0_API_AUDIENCE>', // e.g., http://localhost:1337/
   redirect: 'http://localhost:4200/callback',
-  scope: 'openid profile email',
-  firebase: {
-    apiKey: '<FIREBASE_API_KEY>',
-    authDomain: '<FIREBASE_PROJECT>.firebaseapp.com',
-    databaseURL: 'https://<FIREBASE_PROJECT>.firebaseio.com',
-    projectId: '<FIREBASE_PROJECT>',
-    storageBucket: '<FIREBASE_PROJECT>.appspot.com'
-  }
+  scope: 'openid profile email'
 };
 

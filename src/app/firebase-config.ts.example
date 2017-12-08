@@ -1,0 +1,17 @@
+// @TODO: Remove .example from filename and add your own configuration
+
+interface FirebaseConfig {
+  apiKey: string;
+  authDomain: string;
+  databaseURL: string;
+  projectId: string;
+  storageBucket: string;
+}
+
+export const FIREBASE: FirebaseConfig = {
+  apiKey: '<FIREBASE_API_KEY>',
+  authDomain: '<FIREBASE_PROJECT>.firebaseapp.com',
+  databaseURL: 'https://<FIREBASE_PROJECT>.firebaseio.com',
+  projectId: '<FIREBASE_PROJECT>',
+  storageBucket: '<FIREBASE_PROJECT>.appspot.com'
+}
