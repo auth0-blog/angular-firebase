@@ -60,10 +60,7 @@ export class AuthService {
     this.loggedInFirebase = value;
   }
 
-  login(redirect?: string) {
-    // Set redirect after login
-    const _redirect = redirect ? redirect : this.router.url;
-    localStorage.setItem('authRedirect', _redirect);
+  login() {
     // Auth0 authorize request
     this._auth0.authorize();
   }
@@ -76,7 +73,6 @@ export class AuthService {
         this.setLoggedIn(null);
         this._getProfile(authResult);
       } else if (err) {
-        this._clearRedirect();
         this.router.navigate(['/']);
         this.setLoggedIn(false);
         console.error(`Error authenticating: ${err.error}`);
@@ -89,8 +85,7 @@ export class AuthService {
     this._auth0.client.userInfo(authResult.accessToken, (err, profile) => {
       if (profile) {
         this._setSession(authResult, profile);
-        this.router.navigate([localStorage.getItem('authRedirect')]);
-        this._clearRedirect();
+        this.router.navigate(['/']);
       } else if (err) {
         console.warn(`Error retrieving profile: ${err.error}`);
       }
@@ -140,17 +135,11 @@ export class AuthService {
       });
   }
 
-  private _clearRedirect() {
-    // Remove redirect from localStorage
-    localStorage.removeItem('authRedirect');
-  }
-
-  logout(noRedirect?: boolean) {
+  logout() {
     // Ensure all auth items removed from localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('profile');
     localStorage.removeItem('expires_at');
-    this._clearRedirect();
     // Reset local properties, update loggedIn$ stream
     this.userProfile = undefined;
     this.setLoggedIn(false);
@@ -158,9 +147,7 @@ export class AuthService {
     this.setLoggedInFirebase(false);
     this.afAuth.auth.signOut();
     // Return to homepage
-    if (noRedirect !== true) {
-      this.router.navigate(['/']);
-    }
+    this.router.navigate(['/']);
   }
 
   get tokenValid(): boolean {
