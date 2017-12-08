@@ -66,15 +66,15 @@ export class AuthService {
   }
 
   handleAuth() {
+    this.setLoggedIn(null);
     // When Auth0 hash parsed, get profile
     this._auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
-        this.setLoggedIn(null);
         this._getProfile(authResult);
       } else if (err) {
         this.router.navigate(['/']);
-        this.setLoggedIn(false);
+        this.setLoggedIn(undefined);
         console.error(`Error authenticating: ${err.error}`);
       }
     });
@@ -142,9 +142,9 @@ export class AuthService {
     localStorage.removeItem('expires_at');
     // Reset local properties, update loggedIn$ stream
     this.userProfile = undefined;
-    this.setLoggedIn(false);
+    this.setLoggedIn(undefined);
     // Sign out of Firebase
-    this.setLoggedInFirebase(false);
+    this.setLoggedInFirebase(undefined);
     this.afAuth.auth.signOut();
     // Return to homepage
     this.router.navigate(['/']);
