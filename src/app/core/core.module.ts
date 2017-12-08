@@ -5,8 +5,6 @@ import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
-import { CommentsComponent } from './comments/comments.component';
-import { CommentFormComponent } from './comments/comment-form/comment-form.component';
 import { ApiService } from './api.service';
 
 @NgModule({
@@ -16,14 +14,10 @@ import { ApiService } from './api.service';
     RouterModule
   ],
   declarations: [
-    HeaderComponent,
-    CommentsComponent,
-    CommentFormComponent
+    HeaderComponent
   ],
   exports: [
-    FormsModule,
-    HeaderComponent,
-    CommentsComponent
+    HeaderComponent
   ]
 })
 export class CoreModule {

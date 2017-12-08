@@ -5,14 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { FirebaseModule } from './firebase/firebase.module';
 
 import { AppComponent } from './app.component';
 import { CallbackComponent } from './callback.component';
 
-import { FIREBASE } from './firebase-config';
 
 @NgModule({
   declarations: [
@@ -23,11 +20,9 @@ import { FIREBASE } from './firebase-config';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(FIREBASE),
-    AngularFireAuthModule,
-    AngularFireDatabaseModule,
     AuthModule.forRoot(),
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
+    FirebaseModule
   ],
   providers: [],
   bootstrap: [AppComponent]
