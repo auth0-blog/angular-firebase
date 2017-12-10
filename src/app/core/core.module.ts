@@ -6,18 +6,21 @@ import { Title } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { ApiService } from './api.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   declarations: [
     HeaderComponent
   ],
   exports: [
     HttpClientModule,
+    FormsModule,
     HeaderComponent
   ]
 })
