@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CommentsComponent } from './comments/comments.component';
 import { CommentFormComponent } from './comments/comment-form/comment-form.component';
@@ -20,11 +20,4 @@ import { FIREBASE } from './firebase-config';
     CommentsComponent
   ]
 })
-export class CommentsModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: CommentsModule,
-      providers: []
-    };
-  }
-}
+export class CommentsModule { }
