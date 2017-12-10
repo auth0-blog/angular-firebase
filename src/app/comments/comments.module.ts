@@ -22,4 +22,4 @@ import { FIREBASE } from './firebase-config';
     CommentsComponent
   ]
 })
-export class FirebaseModule { }
+export class CommentsModule { }

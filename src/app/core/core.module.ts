@@ -1,8 +1,9 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { ApiService } from './api.service';
@@ -11,7 +12,8 @@ import { ApiService } from './api.service';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   declarations: [
     HeaderComponent
