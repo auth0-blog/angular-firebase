@@ -69,8 +69,10 @@ export class AuthService {
     this.setLoggedIn(null);
     // When Auth0 hash parsed, get profile
     this._auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
+      if (authResult && authResult.accessToken) {
         window.location.hash = '';
+        // Get Firebase token
+        this._getFirebaseToken(authResult.accessToken);
         this._getProfile(authResult);
       } else if (err) {
         this.router.navigate(['/']);
@@ -103,8 +105,6 @@ export class AuthService {
     this.userProfile = profile;
     // Session set; set loggedIn
     this.setLoggedIn(true);
-    // Get Firebase token
-    this._getFirebaseToken(authResult.accessToken);
   }
 
   private _getFirebaseToken(accessToken) {
