@@ -7,7 +7,13 @@ import { AuthService } from '../../auth/auth.service';
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
-  styles: []
+  styles: [`
+    .avatar {
+      border-radius: 100px;
+      display: inline-block;
+      height: 20px;
+    }
+  `]
 })
 export class CommentsComponent implements OnInit {
   @Input() rank: string | number;

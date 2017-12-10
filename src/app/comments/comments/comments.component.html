@@ -1,7 +1,11 @@
 <section *ngIf="auth.loggedInFirebase" class="comments">
-  <ul>
-    <li *ngFor="let comment of comments$ | async">
-      <strong>{{ comment.user }}:</strong> {{ comment.text }}
+  <h2>Comments</h2>
+  <ul class="list-unstyled">
+    <li *ngFor="let comment of comments$ | async" class="pt-1">
+      <img [src]="comment.picture" class="avatar">
+      <strong>{{ comment.user }}:</strong>
+      <small class="text-info">{{ comment.timestamp | date:'short' }}</small>
+      {{ comment.text }}
     </li>
   </ul>
 
