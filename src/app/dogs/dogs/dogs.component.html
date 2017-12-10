@@ -4,19 +4,22 @@
   Please log in.
 </p>
 
-<ng-template [ngIf]="auth.loggedIn && (dogsList$ | async)">
-  <p class="lead">
-    These were the top <a href="http://www.akc.org/content/news/articles/the-labrador-retriever-wins-top-breed-for-the-26th-year-in-a-row/">10 most popular dog breeds in the United States in 2016</a>, ranked by the American Kennel Club (AKC).
-  </p>
-  <div class="row mb-3">
-    <div *ngFor="let dog of dogsList$ | async" class="col-xs-12 col-sm-6">
-      <div class="card my-2">
-        <img class="card-img-top" [src]="dog.image" [alt]="dog.breed">
-        <div class="card-body">
-          <h5 class="card-title">#{{ dog.rank }}: {{ dog.breed }}</h5>
-          <a class="card-link" [routerLink]="['/dog', dog.rank]">Learn more</a>
+<ng-template [ngIf]="auth.loggedIn">
+  <p *ngIf="!(dogsList$ | async)">Loading...</p>
+  <ng-template [ngIf]="(dogsList$ | async)">
+    <p class="lead">
+      These were the top <a href="http://www.akc.org/content/news/articles/the-labrador-retriever-wins-top-breed-for-the-26th-year-in-a-row/">10 most popular dog breeds in the United States in 2016</a>, ranked by the American Kennel Club (AKC).
+    </p>
+    <div class="row mb-3">
+      <div *ngFor="let dog of dogsList$ | async" class="col-xs-12 col-sm-6">
+        <div class="card my-2">
+          <img class="card-img-top" [src]="dog.image" [alt]="dog.breed">
+          <div class="card-body">
+            <h5 class="card-title">#{{ dog.rank }}: {{ dog.breed }}</h5>
+            <a class="card-link" [routerLink]="['/dog', dog.rank]">Learn more</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-template>
 </ng-template>

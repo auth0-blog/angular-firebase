@@ -1,4 +1,7 @@
 <ng-template [ngIf]="auth.loggedIn">
+  <p *ngIf="!pageTitle">
+    Loading...
+  </p>
   <ng-template [ngIf]="pageTitle">
     <h1 class="text-center">{{ pageTitle }}</h1>
     <div class="text-center pt-2">
