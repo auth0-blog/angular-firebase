@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+import { Comment } from './comment.model';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-comments',
@@ -6,10 +10,21 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class CommentsComponent implements OnInit {
+  @Input() rank: string | number;
+  listName: string;
+  commentRef;
+  comments$: Observable<Comment>;
 
-  constructor() { }
+  constructor(
+    private db: AngularFireDatabase,
+    public auth: AuthService
+  ) { }
 
   ngOnInit() {
+    this.listName = this.rank ? `comments-${this.rank}` : 'comments-main';
+    this.commentRef = this.db.list<Comment[]>(this.listName);
+    this.comments$ = this.commentRef.valueChanges();
+    console.log(this.auth);
   }
 
 }

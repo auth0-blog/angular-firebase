@@ -20,7 +20,7 @@ import { CallbackComponent } from './callback.component';
     AppRoutingModule,
     AuthModule.forRoot(),
     CoreModule.forRoot(),
-    CommentsModule
+    CommentsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

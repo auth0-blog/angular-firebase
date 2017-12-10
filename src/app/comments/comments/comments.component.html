@@ -1,3 +1,8 @@
-<p>
-  comments works!
-</p>
+<section *ngIf="auth.loggedInFirebase" class="comments">
+  Firebase logged in
+  <ul>
+    <li *ngFor="let comment of comments$ | async">
+      {{ comment.user }}: {{ comment.text }}
+    </li>
+  </ul>
+</section>

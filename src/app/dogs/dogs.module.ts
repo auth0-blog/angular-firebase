@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DogsComponent } from './dogs/dogs.component';
 import { Routes, RouterModule } from '@angular/router';
+import { CommentsModule } from '../comments/comments.module';
 
 const DOGS_ROUTES: Routes = [
   {
@@ -13,7 +14,8 @@ const DOGS_ROUTES: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(DOGS_ROUTES)
+    RouterModule.forChild(DOGS_ROUTES),
+    CommentsModule
   ],
   declarations: [
     DogsComponent
