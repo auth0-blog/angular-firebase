@@ -14,4 +14,4 @@ export const FIREBASE: FirebaseConfig = {
   databaseURL: 'https://<FIREBASE_PROJECT>.firebaseio.com',
   projectId: '<FIREBASE_PROJECT>',
   storageBucket: '<FIREBASE_PROJECT>.appspot.com'
-}
+};
