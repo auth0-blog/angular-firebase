@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { CommentsComponent } from './comments/comments.component';
 import { CommentFormComponent } from './comments/comment-form/comment-form.component';
 import { AngularFireModule } from 'angularfire2';
@@ -9,6 +10,7 @@ import { FIREBASE } from './firebase-config';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     AngularFireModule.initializeApp(FIREBASE),
     AngularFireDatabaseModule
   ],

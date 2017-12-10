@@ -12,7 +12,7 @@ import { AuthService } from '../../auth/auth.service';
 export class CommentsComponent implements OnInit {
   @Input() rank: string | number;
   listName: string;
-  commentsRef: AngularFireList<Comment>;
+  private _commentsRef: AngularFireList<Comment>;
   comments$: Observable<Comment[]>;
 
   constructor(
@@ -22,12 +22,15 @@ export class CommentsComponent implements OnInit {
 
   ngOnInit() {
     this.listName = this.rank ? `comments-${this.rank}` : 'comments-main';
-    this.commentsRef = this.db.list(this.listName);
-    this.comments$ = this.commentsRef.valueChanges();
+    this._commentsRef = this.db.list<Comment>(
+      this.listName,
+      ref => ref.orderByChild('timestamp').limitToLast(15)
+    );
+    this.comments$ = this._commentsRef.valueChanges();
   }
 
   onPostComment(data: Comment) {
-    this.commentsRef.push(data);
+    this._commentsRef.push(data);
   }
 
 }

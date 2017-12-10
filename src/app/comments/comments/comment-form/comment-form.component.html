@@ -1,3 +1,15 @@
-<form (ngSubmit)="onSubmit()">
-  <button class="btn btn-primary">Submit</button>
+<form (ngSubmit)="onSubmit()" #tplForm="ngForm">
+  <div class="row form-inline m-1">
+    <input
+      type="text"
+      class="form-control col-sm-10 mb-2 mb-sm-0"
+      name="text"
+      [(ngModel)]="form.text"
+      maxlength="200"
+      required
+    >
+    <button
+      class="btn btn-primary col ml-sm-2"
+      [disabled]="!tplForm.valid">Submit</button>
+  </div>
 </form>
