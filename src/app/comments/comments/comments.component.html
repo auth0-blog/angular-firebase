@@ -1,8 +1,9 @@
 <section *ngIf="auth.loggedInFirebase" class="comments">
-  Firebase logged in
   <ul>
     <li *ngFor="let comment of comments$ | async">
-      {{ comment.user }}: {{ comment.text }}
+      <strong>{{ comment.user }}:</strong> {{ comment.text }}
     </li>
   </ul>
+
+  <app-comment-form (postComment)="onPostComment($event)"></app-comment-form>
 </section>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { Comment } from './comment.model';
 import { AuthService } from '../../auth/auth.service';
@@ -12,8 +12,8 @@ import { AuthService } from '../../auth/auth.service';
 export class CommentsComponent implements OnInit {
   @Input() rank: string | number;
   listName: string;
-  commentRef;
-  comments$: Observable<Comment>;
+  commentsRef: AngularFireList<Comment>;
+  comments$: Observable<Comment[]>;
 
   constructor(
     private db: AngularFireDatabase,
@@ -22,9 +22,12 @@ export class CommentsComponent implements OnInit {
 
   ngOnInit() {
     this.listName = this.rank ? `comments-${this.rank}` : 'comments-main';
-    this.commentRef = this.db.list<Comment[]>(this.listName);
-    this.comments$ = this.commentRef.valueChanges();
-    console.log(this.auth);
+    this.commentsRef = this.db.list(this.listName);
+    this.comments$ = this.commentsRef.valueChanges();
+  }
+
+  onPostComment(data: Comment) {
+    this.commentsRef.push(data);
   }
 
 }
