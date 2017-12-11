@@ -16,8 +16,6 @@ import { AuthService } from '../../auth/auth.service';
   `]
 })
 export class CommentsComponent implements OnInit {
-  @Input() rank: string | number;
-  listName: string;
   private _commentsRef: AngularFireList<Comment>;
   comments$: Observable<Comment[]>;
 
@@ -27,9 +25,8 @@ export class CommentsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.listName = this.rank ? `comments-${this.rank}` : 'comments-main';
     this._commentsRef = this.db.list<Comment>(
-      this.listName,
+      'comments',
       ref => ref.orderByChild('timestamp').limitToLast(15)
     );
     this.comments$ = this._commentsRef.valueChanges();
