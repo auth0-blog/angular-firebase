@@ -7,20 +7,23 @@ import { Title } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { ApiService } from './api.service';
+import { LoadingComponent } from './loading.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    HttpClientModule,
+    HttpClientModule, // AuthModule is a sibling and can use this without us exporting it
     FormsModule
   ],
   declarations: [
-    HeaderComponent
+    HeaderComponent,
+    LoadingComponent
   ],
   exports: [
-    FormsModule,
-    HeaderComponent
+    FormsModule, // Export FormsModule so CommentsModule can use it
+    HeaderComponent,
+    LoadingComponent
   ]
 })
 export class CoreModule {
