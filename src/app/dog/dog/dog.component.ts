@@ -14,9 +14,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class DogComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
-  dog: Dog;
-  dogSub: Subscription;
-  pageTitle: string;
+  dog$: Observable<Dog>;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,24 +25,18 @@ export class DogComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSub = this.route.params
       .subscribe(
-        params => {
-          this._getDog(params['rank']);
-        }
+        params => this.dog$ = this.api.getDogByRank$(params['rank'])
       );
   }
 
-  private _getDog(rank) {
-    this.dogSub = this.api.getDogByRank$(rank)
-      .subscribe(dog => {
-        this.dog = dog;
-        this.pageTitle = `#${this.dog.rank}: ${this.dog.breed}`;
-        this.title.setTitle(this.pageTitle);
-      });
+  getPageTitle(dog: Dog): string {
+    const pageTitle = `#${dog.rank}: ${dog.breed}`;
+    this.title.setTitle(pageTitle);
+    return pageTitle;
   }
 
   ngOnDestroy() {
     this.routeSub.unsubscribe();
-    this.dogSub.unsubscribe();
   }
 
 }
