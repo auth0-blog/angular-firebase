@@ -10,7 +10,7 @@ import { FIREBASE } from './firebase-config';
 @NgModule({
   imports: [
     CommonModule,
-    CoreModule, // This imports the FormsModule and Loading component
+    CoreModule, // Import FormsModule and Loading component
     AngularFireModule.initializeApp(FIREBASE),
     AngularFireDatabaseModule
   ],

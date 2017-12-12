@@ -20,6 +20,7 @@ export class CommentFormComponent implements OnInit {
   private _newComment() {
     this.commentForm = new Comment(
       this.auth.userProfile.name,
+      this.auth.userProfile.sub,
       this.auth.userProfile.picture,
       '',
       null);

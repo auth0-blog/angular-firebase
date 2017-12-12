@@ -36,4 +36,12 @@ export class CommentsComponent implements OnInit {
     this._commentsRef.push(data);
   }
 
+  ownsComment(uid: string): boolean {
+    return uid === this.auth.userProfile.sub;
+  }
+
+  deleteComment(uid) {
+
+  }
+
 }
