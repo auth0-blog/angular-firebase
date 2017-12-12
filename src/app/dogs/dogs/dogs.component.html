@@ -1,3 +1,5 @@
+<app-loading *ngIf="!pageTitle"></app-loading>
+
 <h1 class="text-center">{{ pageTitle }}</h1>
 
 <p *ngIf="auth.loggedIn === undefined" class="lead">
@@ -16,7 +18,9 @@
           <img class="card-img-top" [src]="dog.image" [alt]="dog.breed">
           <div class="card-body">
             <h5 class="card-title">#{{ dog.rank }}: {{ dog.breed }}</h5>
-            <a class="card-link" [routerLink]="['/dog', dog.rank]">Learn more</a>
+            <p class="text-right mb-0">
+              <a class="btn btn-primary" [routerLink]="['/dog', dog.rank]">Learn more</a>
+            </p>
           </div>
         </div>
       </div>

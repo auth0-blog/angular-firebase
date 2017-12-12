@@ -1,7 +1,6 @@
 <section *ngIf="auth.loggedInFirebase" class="comments py-3">
   <h2>Comments</h2>
   <app-loading *ngIf="!(comments$ | async)"></app-loading>
-  <!--<ng-template [ngIf]="(comments$ | async)">-->
     <ul class="list-unstyled">
       <li *ngFor="let comment of comments$ | async" class="pt-1">
         <img [src]="comment.picture" class="avatar">
@@ -13,9 +12,8 @@
             *ngIf="ownsComment(comment.uid)"
             class="text-danger"
             (click)="deleteComment(comment.key)">&times;</a>
-          </strong>
+        </strong>
       </li>
     </ul>
     <app-comment-form (postComment)="onPostComment($event)"></app-comment-form>
-  <!--</ng-template>-->
 </section>
