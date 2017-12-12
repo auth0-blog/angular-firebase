@@ -1,8 +1,10 @@
 <section class="comments py-3">
-  <h2>Comments</h2>
+  <h3>Comments</h3>
 
   <ng-template #loading>
-    <app-loading></app-loading>
+    <p class="lead">
+      <app-loading [inline]="true"></app-loading>Loading comments...
+    </p>
   </ng-template>
 
   <div *ngIf="comments$ | async; let commentsList; else loading">

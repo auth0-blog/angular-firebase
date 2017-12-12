@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-loading',
   template: `
-    <p class="text-center m-0">
-      <img
-        class="py-2"
-        src="/assets/images/loading.svg">
-    </p>
+    <div [ngClass]="{'inline': inline, 'text-center': !inline, 'py-2': !inline }">
+      <img src="/assets/images/loading.svg">
+    </div>
   `,
   styles: [`
-    img {
+    .inline {
       display: inline-block;
+    }
+    img {
       height: 80px;
       width: 80px;
+    }
+    .inline img {
+      height: 24px;
+      width: 24px;
     }
   `]
 })
 export class LoadingComponent implements OnInit {
+  @Input() inline: boolean;
+
   constructor() { }
 
   ngOnInit() {
