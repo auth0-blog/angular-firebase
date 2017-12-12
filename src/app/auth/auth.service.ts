@@ -60,7 +60,10 @@ export class AuthService {
     this.loggedInFirebase = value;
   }
 
-  login() {
+  login(redirect?: string) {
+    // Set redirect after login
+    const _redirect = redirect ? redirect : this.router.url;
+    localStorage.setItem('auth_redirect', _redirect);
     // Auth0 authorize request
     this._auth0.authorize();
   }
@@ -87,7 +90,7 @@ export class AuthService {
     this._auth0.client.userInfo(authResult.accessToken, (err, profile) => {
       if (profile) {
         this._setSession(authResult, profile);
-        this.router.navigate(['/']);
+        this.router.navigate([localStorage.getItem('auth_redirect')]);
       } else if (err) {
         console.warn(`Error retrieving profile: ${err.error}`);
       }
@@ -140,6 +143,7 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('profile');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('auth_redirect');
     // Reset local properties, update loggedIn$ stream
     this.userProfile = undefined;
     this.setLoggedIn(undefined);
