@@ -1,8 +1,12 @@
 <section *ngIf="auth.loggedInFirebase" class="comments py-3">
   <h2>Comments</h2>
-  <app-loading *ngIf="!(comments$ | async)"></app-loading>
+  <ng-template #loading>
+    <app-loading></app-loading>
+  </ng-template>
+
+  <div *ngIf="comments$ | async; let comments; else loading">
     <ul class="list-unstyled">
-      <li *ngFor="let comment of comments$ | async" class="pt-1">
+      <li *ngFor="let comment of comments" class="pt-1">
         <img [src]="comment.picture" class="avatar">
         <strong>{{ comment.user }}:</strong>
         <small class="text-info">{{ comment.timestamp | date:'short' }}</small>
@@ -16,4 +20,5 @@
       </li>
     </ul>
     <app-comment-form (postComment)="onPostComment($event)"></app-comment-form>
+  </div>
 </section>

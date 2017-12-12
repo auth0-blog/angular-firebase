@@ -7,13 +7,17 @@
 </p>
 
 <ng-template [ngIf]="auth.loggedIn">
-  <app-loading *ngIf="!(dogsList$ | async)"></app-loading>
-  <ng-template [ngIf]="(dogsList$ | async)">
+  <ng-template #loading>
+    <!-- Cannot put #templateRef directly on a component -->
+    <app-loading></app-loading>
+  </ng-template>
+
+  <div *ngIf="dogsList$ | async; let dogsList; else loading">
     <p class="lead">
       These were the top <a href="http://www.akc.org/content/news/articles/the-labrador-retriever-wins-top-breed-for-the-26th-year-in-a-row/">10 most popular dog breeds in the United States in 2016</a>, ranked by the American Kennel Club (AKC).
     </p>
     <div class="row mb-3">
-      <div *ngFor="let dog of dogsList$ | async" class="col-xs-12 col-sm-6">
+      <div *ngFor="let dog of dogsList" class="col-xs-12 col-sm-6">
         <div class="card my-2">
           <img class="card-img-top" [src]="dog.image" [alt]="dog.breed">
           <div class="card-body">
@@ -25,5 +29,5 @@
         </div>
       </div>
     </div>
-  </ng-template>
+  </div>
 </ng-template>
