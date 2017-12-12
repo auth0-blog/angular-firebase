@@ -8,11 +8,12 @@
         <strong>{{ comment.user }}:</strong>
         <small class="text-info">{{ comment.timestamp | date:'short' }}</small>
         {{ comment.text }}
-        <small>
+        <strong>
           <a
             *ngIf="ownsComment(comment.uid)"
             class="text-danger"
-            (click)="deleteComment(comment.uid)">Delete</a></small>
+            (click)="deleteComment(comment.key)">&times;</a>
+          </strong>
       </li>
     </ul>
     <app-comment-form (postComment)="onPostComment($event)"></app-comment-form>

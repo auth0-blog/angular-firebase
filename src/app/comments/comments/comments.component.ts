@@ -29,7 +29,13 @@ export class CommentsComponent implements OnInit {
       'comments',
       ref => ref.orderByChild('timestamp').limitToLast(15)
     );
-    this.comments$ = this._commentsRef.valueChanges();
+    this.comments$ = this._commentsRef.snapshotChanges().map(
+      changes => {
+        return changes.map(
+          c => ({ key: c.payload.key, ...c.payload.val() })
+        );
+      }
+    );
   }
 
   onPostComment(data: Comment) {
@@ -40,8 +46,10 @@ export class CommentsComponent implements OnInit {
     return uid === this.auth.userProfile.sub;
   }
 
-  deleteComment(uid) {
-
+  deleteComment(key: string) {
+    if (window.confirm('Are you sure you want to delete your comment?')) {
+      this._commentsRef.remove(key);
+    }
   }
 
 }
