@@ -4,3 +4,10 @@ button:not(disabled), a {
 button:disabled {
   cursor: not-allowed !important;
 }
+.text-primary {
+  color:#0275d8 !important;
+}
+a.text-primary:focus,
+a.text-primary:hover {
+  color: #025aa5
+}

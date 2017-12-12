@@ -1,24 +1,34 @@
-<section *ngIf="auth.loggedInFirebase" class="comments py-3">
+<section class="comments py-3">
   <h2>Comments</h2>
+
   <ng-template #loading>
     <app-loading></app-loading>
   </ng-template>
 
-  <div *ngIf="comments$ | async; let comments; else loading">
+  <div *ngIf="comments$ | async; let commentsList; else loading">
     <ul class="list-unstyled">
-      <li *ngFor="let comment of comments" class="pt-1">
+      <li *ngFor="let comment of commentsList" class="pt-1">
         <img [src]="comment.picture" class="avatar">
         <strong>{{ comment.user }}:</strong>
         <small class="text-info">{{ comment.timestamp | date:'short' }}</small>
         {{ comment.text }}
         <strong>
           <a
-            *ngIf="ownsComment(comment.uid)"
+            *ngIf="canDeleteComment(comment.uid)"
             class="text-danger"
             (click)="deleteComment(comment.key)">&times;</a>
         </strong>
       </li>
     </ul>
+  </div>
+
+  <div *ngIf="auth.loggedInFirebase; else logInToComment">
     <app-comment-form (postComment)="onPostComment($event)"></app-comment-form>
   </div>
+
+  <ng-template #logInToComment>
+    <p class="lead" *ngIf="!auth.loggedIn">
+      Please <a class="text-primary" (click)="auth.login()">log in</a> to leave a comment.
+    </p>
+  </ng-template>
 </section>

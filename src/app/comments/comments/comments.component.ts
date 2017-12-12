@@ -13,6 +13,9 @@ import { AuthService } from '../../auth/auth.service';
       display: inline-block;
       height: 20px;
     }
+    .link {
+      color: #
+    }
   `]
 })
 export class CommentsComponent implements OnInit {
@@ -42,8 +45,11 @@ export class CommentsComponent implements OnInit {
     this._commentsRef.push(data);
   }
 
-  ownsComment(uid: string): boolean {
-    return uid === this.auth.userProfile.sub;
+  canDeleteComment(uid: string): boolean {
+    if (!this.auth.userProfile) {
+      return false;
+    }
+    return (uid === this.auth.userProfile.sub && this.auth.loggedInFirebase);
   }
 
   deleteComment(key: string) {

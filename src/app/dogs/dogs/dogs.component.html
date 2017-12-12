@@ -2,32 +2,25 @@
 
 <h1 class="text-center">{{ pageTitle }}</h1>
 
-<p *ngIf="auth.loggedIn === undefined" class="lead">
-  Please log in.
-</p>
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>
 
-<ng-template [ngIf]="auth.loggedIn">
-  <ng-template #loading>
-    <!-- Cannot put #templateRef directly on a component -->
-    <app-loading></app-loading>
-  </ng-template>
-
-  <div *ngIf="dogsList$ | async; let dogsList; else loading">
-    <p class="lead">
-      These were the top <a href="http://www.akc.org/content/news/articles/the-labrador-retriever-wins-top-breed-for-the-26th-year-in-a-row/">10 most popular dog breeds in the United States in 2016</a>, ranked by the American Kennel Club (AKC).
-    </p>
-    <div class="row mb-3">
-      <div *ngFor="let dog of dogsList" class="col-xs-12 col-sm-6">
-        <div class="card my-2">
-          <img class="card-img-top" [src]="dog.image" [alt]="dog.breed">
-          <div class="card-body">
-            <h5 class="card-title">#{{ dog.rank }}: {{ dog.breed }}</h5>
-            <p class="text-right mb-0">
-              <a class="btn btn-primary" [routerLink]="['/dog', dog.rank]">Learn more</a>
-            </p>
-          </div>
+<div *ngIf="dogsList$ | async; let dogsList; else loading">
+  <p class="lead">
+    These were the top <a href="http://www.akc.org/content/news/articles/the-labrador-retriever-wins-top-breed-for-the-26th-year-in-a-row/">10 most popular dog breeds in the United States in 2016</a>, ranked by the American Kennel Club (AKC).
+  </p>
+  <div class="row mb-3">
+    <div *ngFor="let dog of dogsList" class="col-xs-12 col-sm-6">
+      <div class="card my-2">
+        <img class="card-img-top" [src]="dog.image" [alt]="dog.breed">
+        <div class="card-body">
+          <h5 class="card-title">#{{ dog.rank }}: {{ dog.breed }}</h5>
+          <p class="text-right mb-0">
+            <a class="btn btn-primary" [routerLink]="['/dog', dog.rank]">Learn more</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
-</ng-template>
+</div>
