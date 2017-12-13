@@ -39,8 +39,7 @@ export class CommentsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._commentsRef = this.db.list<Comment>(
-      'comments',
+    this._commentsRef = this.db.list<Comment>('comments',
       ref => ref.orderByChild('timestamp').limitToLast(15)
     );
     this.comments$ = this._commentsRef.snapshotChanges().map(
@@ -57,10 +56,10 @@ export class CommentsComponent implements OnInit {
   }
 
   canDeleteComment(uid: string): boolean {
-    if (!this.auth.userProfile) {
+    if (!this.auth.loggedInFirebase || !this.auth.userProfile) {
       return false;
     }
-    return (uid === this.auth.userProfile.sub && this.auth.loggedInFirebase);
+    return uid === this.auth.userProfile.sub;
   }
 
   deleteComment(key: string) {
