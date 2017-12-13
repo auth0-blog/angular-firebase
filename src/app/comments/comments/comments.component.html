@@ -22,15 +22,15 @@
         </strong>
       </li>
     </ul>
-  </div>
 
-  <div *ngIf="auth.loggedInFirebase; else logInToComment">
-    <app-comment-form (postComment)="onPostComment($event)"></app-comment-form>
-  </div>
+    <div *ngIf="auth.loggedInFirebase; else logInToComment">
+      <app-comment-form (postComment)="onPostComment($event)"></app-comment-form>
+    </div>
 
-  <ng-template #logInToComment>
-    <p class="lead" *ngIf="!auth.loggedIn">
-      Please <a class="text-primary" (click)="auth.login()">log in</a> to leave a comment.
-    </p>
-  </ng-template>
+    <ng-template #logInToComment>
+      <p class="lead" *ngIf="!auth.loggedIn">
+        Please <a class="text-primary" (click)="auth.login()">log in</a> to leave a comment.
+      </p>
+    </ng-template>
+  </div>
 </section>
