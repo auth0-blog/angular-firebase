@@ -24,12 +24,10 @@ export class AuthService {
     scope: environment.auth.scope
   });
   userProfile: any;
-  // Create a stream of logged in status to communicate throughout app
+  // Track authentication status
   loggedIn: boolean;
-  loggedIn$ = new BehaviorSubject<boolean>(this.loggedIn);
-  // Create a stream of Firebase authentication status to communicate throughout app
+  // Track Firebase authentication status
   loggedInFirebase: boolean;
-  loggedInFirebase$ = new BehaviorSubject<boolean>(this.loggedInFirebase);
   // Subscribe to the Firebase token stream
   firebaseSub: Subscription;
   // Subscribe to Firebase renewal timer stream
@@ -40,29 +38,17 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private http: HttpClient) {
       // If authenticated, set local profile property and get new Firebase token.
-      // If not authenticated but there are still items n localStorage, log out.
+      // If not authenticated but there are still items in localStorage, log out.
       const lsProfile = localStorage.getItem('profile');
       const lsToken = localStorage.getItem('access_token');
 
       if (this.tokenValid) {
         this.userProfile = JSON.parse(lsProfile);
-        this.setLoggedIn(true);
+        this.loggedIn = true;
         this._getFirebaseToken(lsToken);
       } else if (!this.tokenValid && lsProfile) {
         this.logout();
       }
-  }
-
-  setLoggedIn(value: boolean) {
-    // Update login status subject
-    this.loggedIn$.next(value);
-    this.loggedIn = value;
-  }
-
-  setLoggedInFirebase(value: boolean) {
-    // Update Firebase login status subject
-    this.loggedInFirebase$.next(value);
-    this.loggedInFirebase = value;
   }
 
   login(redirect?: string) {
@@ -74,7 +60,7 @@ export class AuthService {
   }
 
   handleAuth() {
-    this.setLoggedIn(null);
+    this.loggedIn = null;
     // When Auth0 hash parsed, get profile
     this._auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken) {
@@ -84,7 +70,7 @@ export class AuthService {
         this._getProfile(authResult);
       } else if (err) {
         this.router.navigate(['/']);
-        this.setLoggedIn(undefined);
+        this.loggedIn = false;
         console.error(`Error authenticating: ${err.error}`);
       }
     });
@@ -112,7 +98,7 @@ export class AuthService {
     localStorage.setItem('profile', JSON.stringify(profile));
     this.userProfile = profile;
     // Session set; set loggedIn
-    this.setLoggedIn(true);
+    this.loggedIn = true;
   }
 
   private _getFirebaseToken(accessToken) {
@@ -131,8 +117,7 @@ export class AuthService {
   private _firebaseAuth(tokenObj) {
     this.afAuth.auth.signInWithCustomToken(tokenObj.firebaseToken)
       .then(res => {
-        // Emit loggedInFirebase$ subject with true value
-        this.setLoggedInFirebase(true);
+        this.loggedInFirebase = true;
         // Schedule token renewal
         this.scheduleFirebaseRenewal();
         console.log('Successfully authenticated with Firebase!');
@@ -142,7 +127,7 @@ export class AuthService {
         const errorMessage = err.message;
         console.error(`${errorCode} Could not log into Firebase: ${errorMessage}`);
         // Emit loggedInFirebase$ subject with undefined value
-        this.setLoggedInFirebase(false);
+        this.loggedInFirebase = false;
       });
   }
 
@@ -154,9 +139,9 @@ export class AuthService {
     localStorage.removeItem('auth_redirect');
     // Reset local properties, update loggedIn$ stream
     this.userProfile = undefined;
-    this.setLoggedIn(false);
+    this.loggedIn = false;
     // Sign out of Firebase
-    this.setLoggedInFirebase(false);
+    this.loggedInFirebase = false;
     this.afAuth.auth.signOut();
     // Return to homepage
     this.router.navigate(['/']);
