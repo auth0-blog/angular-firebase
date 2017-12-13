@@ -15,8 +15,8 @@ import { Title } from '@angular/platform-browser';
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: cover;
-      border-radius: .2rem;
       min-height: 250px;
+      width: 100%;
     }
   `]
 })

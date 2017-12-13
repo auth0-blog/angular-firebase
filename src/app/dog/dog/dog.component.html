@@ -6,7 +6,9 @@
   <div *ngIf="dog$ | async; let dog; else loading">
     <h1 class="text-center">{{ getPageTitle(dog) }}</h1>
     <div class="row align-items-center pt-2">
-      <div class="dog-photo col-12 col-sm-6" [style.backgroundImage]="getImgStyle(dog.image)"></div>
+      <div class="col-12 col-sm-6">
+        <div class="dog-photo rounded mb-2 mb-sm-0" [style.backgroundImage]="getImgStyle(dog.image)"></div>
+      </div>
       <ul class="list-unstyled col-12 col-sm-6">
         <li><strong>Group:</strong> {{ dog.group }}</li>
         <li><strong>Personality:</strong> {{ dog.personality }}</li>
