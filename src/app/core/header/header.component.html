@@ -4,7 +4,7 @@
     </div>
     <div class="ml-3">
       <button
-        *ngIf="auth.loggedIn === undefined"
+        *ngIf="!auth.loggedIn && auth.loggedIn !== null"
         class="btn btn-primary btn-sm"
         (click)="auth.login()">Log In</button>
       <span *ngIf="auth.loggedIn === null" class="loading">

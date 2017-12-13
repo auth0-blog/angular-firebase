@@ -8,6 +8,9 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/mergeMap';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +32,8 @@ export class AuthService {
   loggedInFirebase$ = new BehaviorSubject<boolean>(this.loggedInFirebase);
   // Subscribe to the Firebase token stream
   firebaseSub: Subscription;
+  // Subscribe to Firebase renewal timer stream
+  refreshFirebaseSub: Subscription;
 
   constructor(
     private router: Router,
@@ -128,13 +133,16 @@ export class AuthService {
       .then(res => {
         // Emit loggedInFirebase$ subject with true value
         this.setLoggedInFirebase(true);
-        this.firebaseSub.unsubscribe();
+        // Schedule token renewal
+        this.scheduleFirebaseRenewal();
         console.log('Successfully authenticated with Firebase!');
       })
       .catch(err => {
         const errorCode = err.code;
         const errorMessage = err.message;
         console.error(`${errorCode} Could not log into Firebase: ${errorMessage}`);
+        // Emit loggedInFirebase$ subject with undefined value
+        this.setLoggedInFirebase(false);
       });
   }
 
@@ -146,9 +154,9 @@ export class AuthService {
     localStorage.removeItem('auth_redirect');
     // Reset local properties, update loggedIn$ stream
     this.userProfile = undefined;
-    this.setLoggedIn(undefined);
+    this.setLoggedIn(false);
     // Sign out of Firebase
-    this.setLoggedInFirebase(undefined);
+    this.setLoggedInFirebase(false);
     this.afAuth.auth.signOut();
     // Return to homepage
     this.router.navigate(['/']);
@@ -158,6 +166,41 @@ export class AuthService {
     // Check if current time is past access token's expiration
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return Date.now() < expiresAt;
+  }
+
+  scheduleFirebaseRenewal() {
+    // If user isn't authenticated with Firebase, do nothing
+    if (!this.loggedInFirebase) { return; }
+    // Unsubscribe from previous expiration observable
+    this.unscheduleFirebaseRenewal();
+    // Create and subscribe to expiration observable
+    // Custom Firebase tokens minted by Firebase
+    // expire after 3600 seconds (1 hour)
+    const expiresAt = new Date().getTime() + (3600 * 1000);
+    const expiresIn$ = Observable.of(expiresAt)
+      .mergeMap(
+        expires => {
+          const now = Date.now();
+          // Use timer to track delay until expiration
+          // to run the refresh at the proper time
+          return Observable.timer(Math.max(1, expires - now));
+        }
+      );
+
+    this.refreshFirebaseSub = expiresIn$
+      .subscribe(
+        () => {
+          console.log('Firebase token expired; fetching a new one');
+          this._getFirebaseToken(localStorage.getItem('access_token'));
+          this.scheduleFirebaseRenewal();
+        }
+      );
+  }
+
+  unscheduleFirebaseRenewal() {
+    if (this.refreshFirebaseSub) {
+      this.refreshFirebaseSub.unsubscribe();
+    }
   }
 
 }
