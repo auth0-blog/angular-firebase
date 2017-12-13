@@ -9,12 +9,23 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './comments.component.html',
   styles: [`
     .avatar {
-      border-radius: 100px;
       display: inline-block;
-      height: 20px;
+      height: 30px;
     }
-    .link {
-      color: #
+    .comment-text {
+      background: #eee;
+      position: relative;
+    }
+    .comment-text::before {
+      border-bottom: 10px solid #eee;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      content: '';
+      display: block;
+      height: 1px;
+      position: absolute;
+        top: -10px; left: 9px;
+      width: 1px;
     }
   `]
 })

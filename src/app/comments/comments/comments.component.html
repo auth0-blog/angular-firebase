@@ -9,17 +9,28 @@
 
   <div *ngIf="comments$ | async; let commentsList; else loading">
     <ul class="list-unstyled">
-      <li *ngFor="let comment of commentsList" class="pt-1">
-        <img [src]="comment.picture" class="avatar">
-        <strong>{{ comment.user }}:</strong>
-        <small class="text-info">{{ comment.timestamp | date:'short' }}</small>
-        {{ comment.text }}
-        <strong>
-          <a
-            *ngIf="canDeleteComment(comment.uid)"
-            class="text-danger"
-            (click)="deleteComment(comment.key)">&times;</a>
-        </strong>
+      <li *ngFor="let comment of commentsList" class="pt-2">
+        <div class="row mb-1">
+          <div class="col">
+            <img [src]="comment.picture" class="avatar rounded">
+            <strong>{{ comment.user }}</strong>
+            <small class="text-info">{{ comment.timestamp | date:'short' }}</small>
+            <strong>
+              <a
+                *ngIf="canDeleteComment(comment.uid)"
+                class="text-danger"
+                title="Delete"
+                (click)="deleteComment(comment.key)">&times;</a>
+            </strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p class="comment-text rounded p-2 my-2">
+              {{ comment.text }}
+            </p>
+          </div>
+        </div>
       </li>
     </ul>
 
