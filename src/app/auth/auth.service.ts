@@ -102,6 +102,9 @@ export class AuthService {
   }
 
   private _getFirebaseToken(accessToken) {
+    if (!accessToken) {
+      this.login();
+    }
     const getToken$ = () => {
       return this.http
         .get(`http://localhost:1337/auth/firebase`, {
@@ -126,7 +129,6 @@ export class AuthService {
         const errorCode = err.code;
         const errorMessage = err.message;
         console.error(`${errorCode} Could not log into Firebase: ${errorMessage}`);
-        // Emit loggedInFirebase$ subject with undefined value
         this.loggedInFirebase = false;
       });
   }
@@ -137,7 +139,6 @@ export class AuthService {
     localStorage.removeItem('profile');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('auth_redirect');
-    // Reset local properties, update loggedIn$ stream
     this.userProfile = undefined;
     this.loggedIn = false;
     // Sign out of Firebase
@@ -150,6 +151,7 @@ export class AuthService {
   get tokenValid(): boolean {
     // Check if current time is past access token's expiration
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    const tokenValid = Date.now() < expiresAt;
     return Date.now() < expiresAt;
   }
 
