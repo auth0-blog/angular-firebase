@@ -1,5 +1,3 @@
-// @TODO: Remove .example from filename and add your own configuration
-
 interface FirebaseConfig {
   apiKey: string;
   authDomain: string;
@@ -9,13 +7,13 @@ interface FirebaseConfig {
   messagingSenderId: string;
 }
 
-const PROJECT_NAME = '<FIREBASE_PROJECT>';
+const PROJECT_NAME = 'angular-firebase-auth0';
 
 export const FIREBASE: FirebaseConfig = {
-  apiKey: '<FIREBASE_API_KEY>',
+  apiKey: 'AIzaSyCxGpJVfu4mqCKE4qGelsw1jo7AzlB841o',
   authDomain: `${PROJECT_NAME}.firebaseapp.com`,
   databaseURL: `https://${PROJECT_NAME}.firebaseio.com`,
   projectId: PROJECT_NAME,
   storageBucket: `${PROJECT_NAME}.appspot.com`,
-  messagingSenderId: '<FIREBASE_MESSAGING_SENDER_ID>'
+  messagingSenderId: '986008863457'
 };

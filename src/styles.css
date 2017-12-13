@@ -9,5 +9,6 @@ button:disabled {
 }
 a.text-primary:focus,
 a.text-primary:hover {
-  color: #025aa5
+  color: #025aa5;
+  text-decoration: underline !important;
 }

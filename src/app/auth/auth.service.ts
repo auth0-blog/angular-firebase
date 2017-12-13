@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AUTH } from './auth-config';
+import { environment } from './../../environments/environment';
 import * as auth0 from 'auth0-js';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -13,12 +13,12 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 export class AuthService {
   // Create Auth0 web auth instance
   private _auth0 = new auth0.WebAuth({
-    clientID: AUTH.clientId,
-    domain: AUTH.clientDomain,
+    clientID: environment.auth.clientId,
+    domain: environment.auth.clientDomain,
     responseType: 'token id_token',
-    redirectUri: AUTH.redirect,
-    audience: AUTH.audience,
-    scope: AUTH.scope
+    redirectUri: environment.auth.redirect,
+    audience: environment.auth.audience,
+    scope: environment.auth.scope
   });
   userProfile: any;
   // Create a stream of logged in status to communicate throughout app
