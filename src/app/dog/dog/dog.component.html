@@ -5,15 +5,22 @@
 
   <div *ngIf="dog$ | async; let dog; else loading">
     <h1 class="text-center">{{ getPageTitle(dog) }}</h1>
-    <div class="text-center pt-2">
-      <img [src]="dog.image">
-      <p class="text-secondary">
-        <em>{{ dog.group }} Group</em>
-      </p>
+    <div class="row align-items-center pt-2">
+      <div class="dog-photo col-12 col-sm-6" [style.backgroundImage]="getImgStyle(dog.image)"></div>
+      <ul class="list-unstyled col-12 col-sm-6">
+        <li><strong>Group:</strong> {{ dog.group }}</li>
+        <li><strong>Personality:</strong> {{ dog.personality }}</li>
+        <li><strong>Energy Level:</strong> {{ dog.energy }}</li>
+      </ul>
     </div>
-    <p [innerHTML]="dog.description"></p>
-    <p class="text-center">
-      <a class="btn btn-primary" [href]="dog.link">{{ dog.breed }} AKC Info</a>
-    </p>
+    <div class="row">
+      <div class="col">
+        <p class="lead mt-3" [innerHTML]="dog.description"></p>
+        <p class="clearfix">
+          <a routerLink="/" class="btn btn-link float-left">&larr; Back</a>
+          <a class="btn btn-primary float-right" [href]="dog.link">{{ dog.breed }} AKC Info</a>
+        </p>
+      </div>
+    </div>
   </div>
 </ng-template>

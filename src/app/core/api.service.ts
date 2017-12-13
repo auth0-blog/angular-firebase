@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { AuthService } from './../auth/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { Dog } from './../core/dog';
+import { DogDetail } from './../core/dog-detail';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class ApiService {
       .catch(this._handleError);
   }
 
-  getDogByRank$(rank: number): Observable<Dog> {
+  getDogByRank$(rank: number): Observable<DogDetail> {
     return this.http
       .get(`${this._API}/dog/${rank}`, {
         headers: new HttpHeaders().set('Authorization', `Bearer ${this._accessToken}`)
