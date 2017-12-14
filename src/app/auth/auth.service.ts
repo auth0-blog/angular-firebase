@@ -101,6 +101,7 @@ export class AuthService {
   }
 
   private _getFirebaseToken(accessToken) {
+    // Detect if no valid access token passed (e.g., in localStorage)
     if (!accessToken) {
       this.login();
     }
