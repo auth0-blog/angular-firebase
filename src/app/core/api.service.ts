@@ -4,7 +4,7 @@ import { AuthService } from './../auth/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { Dog } from './../core/dog';
 import { DogDetail } from './../core/dog-detail';
-import 'rxjs/add/operator/catch';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
@@ -20,7 +20,9 @@ export class ApiService {
       .get(`${this._API}/dogs`, {
         headers: new HttpHeaders().set('Authorization', `Bearer ${this._accessToken}`)
       })
-      .catch(this._handleError);
+      .pipe(
+        catchError(this._handleError)
+      );
   }
 
   getDogByRank$(rank: number): Observable<DogDetail> {
@@ -28,7 +30,9 @@ export class ApiService {
       .get(`${this._API}/dog/${rank}`, {
         headers: new HttpHeaders().set('Authorization', `Bearer ${this._accessToken}`)
       })
-      .catch(this._handleError);
+      .pipe(
+        catchError(this._handleError)
+      );
   }
 
   private _handleError(err: HttpErrorResponse | any) {

@@ -7,9 +7,9 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator/mergeMap';
+import { of } from 'rxjs/observable/of';
+import 'rxjs/add/observable/timer'; // Using lettable produces an error
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -164,13 +164,15 @@ export class AuthService {
     // expire after 3600 seconds (1 hour)
     const expiresAt = new Date().getTime() + (3600 * 1000);
     const expiresIn$ = Observable.of(expiresAt)
-      .mergeMap(
-        expires => {
-          const now = Date.now();
-          // Use timer to track delay until expiration
-          // to run the refresh at the proper time
-          return Observable.timer(Math.max(1, expires - now));
-        }
+      .pipe(
+        mergeMap(
+          expires => {
+            const now = Date.now();
+            // Use timer to track delay until expiration
+            // to run the refresh at the proper time
+            return Observable.timer(Math.max(1, expires - now));
+          }
+        )
       );
 
     this.refreshFirebaseSub = expiresIn$
