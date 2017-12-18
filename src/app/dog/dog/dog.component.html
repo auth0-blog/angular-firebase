@@ -22,7 +22,10 @@
         <p class="lead mt-3" [innerHTML]="dog.description"></p>
         <p class="clearfix">
           <a routerLink="/" class="btn btn-link float-left">&larr; Back</a>
-          <a class="btn btn-primary float-right" [href]="dog.link">{{ dog.breed }} AKC Info</a>
+          <a
+            class="btn btn-primary float-right"
+            [href]="dog.link"
+            target="_blank">{{ dog.breed }} AKC Info</a>
         </p>
       </div>
     </div>

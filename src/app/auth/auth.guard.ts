@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
     if (this.auth.tokenValid) {
       return true;
     } else {
-      // Send guarded route to redirect to after logging in
+      // Send guarded route to redirect after logging in
       this.auth.login(state.url);
       return false;
     }
