@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreModule } from '../core/core.module';
-import { DogsComponent } from './dogs/dogs.component';
 import { Routes, RouterModule } from '@angular/router';
+import { CoreModule } from '../core/core.module';
 import { CommentsModule } from '../comments/comments.module';
+import { DogsComponent } from './dogs/dogs.component';
 
 const DOGS_ROUTES: Routes = [
   {
