@@ -19,7 +19,6 @@ import { CallbackComponent } from './callback.component';
     CoreModule.forRoot(),
     CommentsModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

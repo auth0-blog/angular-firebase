@@ -8,8 +8,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
   imports: [
     CommonModule,
     AngularFireAuthModule
-  ],
-  declarations: []
+  ]
 })
 export class AuthModule {
   static forRoot(): ModuleWithProviders {
