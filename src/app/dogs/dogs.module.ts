@@ -21,9 +21,6 @@ const DOGS_ROUTES: Routes = [
   ],
   declarations: [
     DogsComponent
-  ],
-  exports: [
-    DogsComponent
   ]
 })
 export class DogsModule { }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './../auth/auth.service';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
 import { Dog } from './../core/dog';
 import { DogDetail } from './../core/dog-detail';
 import { catchError } from 'rxjs/operators';
@@ -41,6 +42,7 @@ export class ApiService {
       this.auth.logout();
       this.auth.login();
     }
+    console.error(errorMsg);
     return Observable.throw(errorMsg);
   }
 
