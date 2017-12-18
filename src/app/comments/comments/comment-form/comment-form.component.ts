@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Comment } from './../comment';
+import { Comment } from './../../comment';
 import { AuthService } from '../../../auth/auth.service';
 
 @Component({

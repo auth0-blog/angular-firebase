@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
-import { Comment } from './comment';
+import { Comment } from './../comment';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({

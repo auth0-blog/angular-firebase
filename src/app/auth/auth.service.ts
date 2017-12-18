@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import 'rxjs/add/observable/timer'; // Using lettable produces an error
+import 'rxjs/add/observable/timer'; // Using lettable { timer } produces a type error
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
@@ -113,7 +113,7 @@ export class AuthService {
     };
     this.firebaseSub = getToken$().subscribe(
       res => this._firebaseAuth(res),
-      err => console.error(`An error occurred fetching Firebase token: ${err}`)
+      err => console.error(`An error occurred fetching Firebase token: ${err.message}`)
     );
   }
 
