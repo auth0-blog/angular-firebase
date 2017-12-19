@@ -102,7 +102,7 @@ export class AuthService {
 
   private _getFirebaseToken(accessToken) {
     // Detect if no valid access token passed (e.g., in localStorage)
-    if (!accessToken || !this.tokenValid) {
+    if (!accessToken) {
       this.login();
     }
     const getToken$ = () => {
@@ -157,7 +157,7 @@ export class AuthService {
 
   scheduleFirebaseRenewal() {
     // If user isn't authenticated, do nothing
-    if (!this.loggedInFirebase || !this.tokenValid) { return; }
+    if (!this.loggedInFirebase) { return; }
     // Unsubscribe from previous expiration observable
     this.unscheduleFirebaseRenewal();
     // Create and subscribe to expiration observable
