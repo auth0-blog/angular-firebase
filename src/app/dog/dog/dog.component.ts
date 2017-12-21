@@ -38,18 +38,22 @@ export class DogComponent implements OnInit, OnDestroy {
       .subscribe(
         params => {
           this.dog$ = this.api.getDogByRank$(params['rank']).pipe(
-            map((res: DogDetail) => {
-              this.loading = false;
-              return res;
-            }),
-            catchError((err: any) => {
-              this.loading = false;
-              this.error = true;
-              return Observable.throw('An error occurred fetching dog data.');
-            })
+            map(this._dataSuccess),
+            catchError(this._dataError)
           );
         }
       );
+  }
+
+  private _dataSuccess(res: DogDetail): DogDetail {
+    this.loading = false;
+    return res;
+  }
+
+  private _dataError(err: any): Observable<any> {
+    this.loading = false;
+    this.error = true;
+    return Observable.throw('An error occurred fetching dog data.');
   }
 
   getImgStyle(url: string) {

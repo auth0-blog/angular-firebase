@@ -22,20 +22,24 @@ export class DogsComponent implements OnInit {
     public auth: AuthService,
     private api: ApiService) {
       this.dogsList$ = api.getDogs$().pipe(
-        map((res: Dog[]) => {
-          this.loading = false;
-          return res;
-        }),
-        catchError((err: any) => {
-          this.loading = false;
-          this.error = true;
-          return Observable.throw('An error occurred fetching dogs data.');
-        })
+        map(this._dataSuccess),
+        catchError(this._dataError)
       );
     }
 
   ngOnInit() {
     this.title.setTitle(this.pageTitle);
+  }
+
+  private _dataSuccess(res: Dog[]): Dog[] {
+    this.loading = false;
+    return res;
+  }
+
+  private _dataError(err: any): Observable<any> {
+    this.loading = false;
+    this.error = true;
+    return Observable.throw('An error occurred fetching dogs data.');
   }
 
 }
