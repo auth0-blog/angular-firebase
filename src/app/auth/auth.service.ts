@@ -80,7 +80,6 @@ export class AuthService {
     this._auth0.client.userInfo(authResult.accessToken, (err, profile) => {
       if (profile) {
         this._setSession(authResult, profile);
-        this.router.navigate([localStorage.getItem('auth_redirect')]);
       } else if (err) {
         console.warn(`Error retrieving profile: ${err.error}`);
       }
@@ -98,10 +97,12 @@ export class AuthService {
     this.userProfile = profile;
     // Session set; set loggedIn
     this.loggedIn = true;
+    // Redirect to desired route
+    this.router.navigate([localStorage.getItem('auth_redirect')]);
   }
 
   private _getFirebaseToken(accessToken) {
-    // Detect if no valid access token passed (e.g., in localStorage)
+    // Detect if no valid access token passed into this method
     if (!accessToken) {
       this.login();
     }
