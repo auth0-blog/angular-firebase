@@ -42,7 +42,6 @@ export class ApiService {
       this.auth.logout();
       this.auth.login();
     }
-    console.error(errorMsg);
     return Observable.throw(errorMsg);
   }
 

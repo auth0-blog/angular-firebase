@@ -2,11 +2,12 @@
 
 <h1 class="text-center">{{ pageTitle }}</h1>
 
-<ng-template #loading>
-  <app-loading></app-loading>
+<ng-template #noDogs>
+  <app-loading *ngIf="loading"></app-loading>
+  <app-error *ngIf="error"></app-error>
 </ng-template>
 
-<div *ngIf="dogsList$ | async; let dogsList; else loading">
+<div *ngIf="dogsList$ | async; let dogsList; else noDogs">
   <p class="lead">
     These were the top <a href="http://www.akc.org/content/news/articles/the-labrador-retriever-wins-top-breed-for-the-26th-year-in-a-row/">10 most popular dog breeds in the United States in 2016</a>, ranked by the American Kennel Club (AKC).
   </p>

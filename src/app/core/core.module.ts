@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { ApiService } from './api.service';
 import { LoadingComponent } from './loading.component';
+import { ErrorComponent } from './error.component';
 
 @NgModule({
   imports: [
@@ -18,12 +19,14 @@ import { LoadingComponent } from './loading.component';
   ],
   declarations: [
     HeaderComponent,
-    LoadingComponent
+    LoadingComponent,
+    ErrorComponent
   ],
   exports: [
     FormsModule, // Export FormsModule so CommentsModule can use it
     HeaderComponent,
-    LoadingComponent
+    LoadingComponent,
+    ErrorComponent
   ]
 })
 export class CoreModule {

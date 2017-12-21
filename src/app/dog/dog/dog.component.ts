@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AuthService } from '../../auth/auth.service';
 import { ApiService } from '../../core/api.service';
 import { Observable } from 'rxjs/Observable';
+import { map, catchError } from 'rxjs/operators';
 import { DogDetail } from './../../core/dog-detail';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -23,6 +24,8 @@ import { Title } from '@angular/platform-browser';
 export class DogComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
   dog$: Observable<DogDetail>;
+  loading = true;
+  error: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +36,19 @@ export class DogComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSub = this.route.params
       .subscribe(
-        params => this.dog$ = this.api.getDogByRank$(params['rank'])
+        params => {
+          this.dog$ = this.api.getDogByRank$(params['rank']).pipe(
+            map((res: DogDetail) => {
+              this.loading = false;
+              return res;
+            }),
+            catchError((err: any) => {
+              this.loading = false;
+              this.error = true;
+              return Observable.throw('An error occurred fetching dog data.');
+            })
+          );
+        }
       );
   }
 

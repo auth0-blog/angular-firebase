@@ -15,7 +15,7 @@ const DOGS_ROUTES: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    CoreModule, // Import Loading component
+    CoreModule,
     RouterModule.forChild(DOGS_ROUTES),
     CommentsModule
   ],
