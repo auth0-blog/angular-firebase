@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { environment } from './../../environments/environment';
 import { AuthService } from './../auth/auth.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
@@ -9,7 +10,7 @@ import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
-  private _API = 'http://localhost:1337/api';
+  private _API = `${environment.apiRoot}api`;
   private _accessToken = localStorage.getItem('access_token');
 
   constructor(

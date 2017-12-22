@@ -21,5 +21,6 @@ export const environment = {
     projectId: FB_PROJECT_ID,
     storageBucket: `${FB_PROJECT_ID}.appspot.com`,
     messagingSenderId: '<FIREBASE_MESSAGING_SENDER_ID>'
-  }
+  },
+  apiRoot: '<API URL>' // e.g., http://localhost:1337/ (include trailing slash)
 };

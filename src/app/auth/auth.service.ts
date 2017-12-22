@@ -108,7 +108,7 @@ export class AuthService {
     }
     const getToken$ = () => {
       return this.http
-        .get(`http://localhost:1337/auth/firebase`, {
+        .get(`${environment.apiRoot}auth/firebase`, {
           headers: new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
         });
     };
