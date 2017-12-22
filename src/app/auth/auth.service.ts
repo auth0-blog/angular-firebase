@@ -134,31 +134,15 @@ export class AuthService {
       });
   }
 
-  logout() {
-    // Ensure all auth items removed from localStorage
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('profile');
-    localStorage.removeItem('expires_at');
-    localStorage.removeItem('auth_redirect');
-    this.userProfile = undefined;
-    this.loggedIn = false;
-    // Sign out of Firebase
-    this.loggedInFirebase = false;
-    this.afAuth.auth.signOut();
-    // Return to homepage
-    this.router.navigate(['/']);
-  }
-
-  get tokenValid(): boolean {
-    // Check if current time is past access token's expiration
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    const tokenValid = Date.now() < expiresAt;
-    return Date.now() < expiresAt;
-  }
-
   scheduleFirebaseRenewal() {
-    // If user isn't authenticated, do nothing
-    if (!this.loggedInFirebase) { return; }
+    // If user isn't authenticated, check for Firebase subscription
+    // and unsubscribe, then return (don't schedule renewal)
+    if (!this.loggedInFirebase) {
+      if (this.firebaseSub) {
+        this.firebaseSub.unsubscribe();
+      }
+      return;
+    }
     // Unsubscribe from previous expiration observable
     this.unscheduleFirebaseRenewal();
     // Create and subscribe to expiration observable
@@ -182,7 +166,6 @@ export class AuthService {
         () => {
           console.log('Firebase token expired; fetching a new one');
           this._getFirebaseToken(localStorage.getItem('access_token'));
-          this.scheduleFirebaseRenewal();
         }
       );
   }
@@ -191,6 +174,28 @@ export class AuthService {
     if (this.refreshFirebaseSub) {
       this.refreshFirebaseSub.unsubscribe();
     }
+  }
+
+  logout() {
+    // Ensure all auth items removed from localStorage
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('profile');
+    localStorage.removeItem('expires_at');
+    localStorage.removeItem('auth_redirect');
+    this.userProfile = undefined;
+    this.loggedIn = false;
+    // Sign out of Firebase
+    this.loggedInFirebase = false;
+    this.afAuth.auth.signOut();
+    // Return to homepage
+    this.router.navigate(['/']);
+  }
+
+  get tokenValid(): boolean {
+    // Check if current time is past access token's expiration
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    const tokenValid = Date.now() < expiresAt;
+    return Date.now() < expiresAt;
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-error',
@@ -6,14 +6,7 @@ import { Component, OnInit } from '@angular/core';
     <p class="alert alert-danger">
       <strong>Error:</strong> There was an error retrieving data.
     </p>
-  `,
-  styles: []
+  `
 })
-export class ErrorComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class ErrorComponent {
 }

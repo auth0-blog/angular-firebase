@@ -22,8 +22,8 @@ export class DogsComponent implements OnInit {
     public auth: AuthService,
     private api: ApiService) {
       this.dogsList$ = api.getDogs$().pipe(
-        map(this._dataSuccess),
-        catchError(this._dataError)
+        map(res => this._dataSuccess(res)),
+        catchError(err => this._dataError(err))
       );
     }
 

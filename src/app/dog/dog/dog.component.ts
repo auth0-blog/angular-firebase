@@ -38,8 +38,8 @@ export class DogComponent implements OnInit, OnDestroy {
       .subscribe(
         params => {
           this.dog$ = this.api.getDogByRank$(params['rank']).pipe(
-            map(this._dataSuccess),
-            catchError(this._dataError)
+            map(res => this._dataSuccess(res)),
+            catchError(err => this._dataError(err))
           );
         }
       );
