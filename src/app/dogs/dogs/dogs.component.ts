@@ -8,8 +8,7 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dogs',
-  templateUrl: './dogs.component.html',
-  styles: []
+  templateUrl: './dogs.component.html'
 })
 export class DogsComponent implements OnInit {
   pageTitle = 'Popular Dogs';
