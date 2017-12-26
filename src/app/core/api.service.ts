@@ -3,10 +3,10 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { environment } from './../../environments/environment';
 import { AuthService } from './../auth/auth.service';
 import { Observable } from 'rxjs/Observable';
+import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import { Dog } from './../core/dog';
 import { DogDetail } from './../core/dog-detail';
-import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
@@ -15,13 +15,11 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    public auth: AuthService) { }
+    private auth: AuthService) { }
 
   getDogs$(): Observable<Dog[]> {
     return this.http
-      .get(`${this._API}/dogs`, {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${this._accessToken}`)
-      })
+      .get(`${this._API}/dogs`)
       .pipe(
         catchError(this._handleError)
       );
