@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -20,11 +20,16 @@ import { AuthService } from '../../auth/auth.service';
     }
   `]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   constructor(public auth: AuthService) {}
 
-  ngOnInit() {
+  get showLogin(): boolean {
+    return !this.auth.loggedIn && this.auth.loggedIn !== null;
+  }
+
+  get loggingIn(): boolean {
+    return this.auth.loggedIn === null;
   }
 
 }

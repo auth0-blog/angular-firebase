@@ -1,21 +1,21 @@
 <nav class="nav justify-content-between mt-2 mx-2 mb-3">
-    <div class="d-flex align-items-center">
-      <strong class="mr-1"><a routerLink="/" class="home-link">Popular Dogs ❤</a></strong>
-    </div>
-    <div class="ml-3">
+  <div class="d-flex align-items-center">
+    <strong class="mr-1"><a routerLink="/" class="home-link">Popular Dogs ❤</a></strong>
+  </div>
+  <div class="ml-3">
+    <button
+      *ngIf="showLogin"
+      class="btn btn-primary btn-sm"
+      (click)="auth.login()">Log In</button>
+    <small *ngIf="loggingIn" class="loading">
+      Logging in...
+    </small>
+    <span *ngIf="auth.loggedIn">
+      <img [src]="auth.userProfile?.picture">
+      <small>{{ auth.userProfile?.name }}</small>
       <button
-        *ngIf="!auth.loggedIn && auth.loggedIn !== null"
-        class="btn btn-primary btn-sm"
-        (click)="auth.login()">Log In</button>
-      <span *ngIf="auth.loggedIn === null" class="loading">
-        <small>Logging in...</small>
-      </span>
-      <span *ngIf="auth.loggedIn">
-        <img [src]="auth.userProfile.picture">
-        <small>{{ auth.userProfile.name }}</small>
-        <button
-          class="btn btn-danger btn-sm"
-          (click)="auth.logout()">Log Out</button>
-      </span>
-    </div>
-  </nav>
+        class="btn btn-danger btn-sm"
+        (click)="auth.logout()">Log Out</button>
+    </span>
+  </div>
+</nav>
