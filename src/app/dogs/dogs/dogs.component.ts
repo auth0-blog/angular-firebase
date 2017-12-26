@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ApiService } from '../../core/api.service';
-import { AuthService } from '../../auth/auth.service';
+import { Dog } from './../../core/dog';
 import { Observable } from 'rxjs/Observable';
 import { map, catchError } from 'rxjs/operators';
-import { Dog } from './../../core/dog';
-import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dogs',
@@ -18,13 +17,12 @@ export class DogsComponent implements OnInit {
 
   constructor(
     private title: Title,
-    public auth: AuthService,
     private api: ApiService) {
       this.dogsList$ = api.getDogs$().pipe(
         map(res => this._dataSuccess(res)),
         catchError(err => this._dataError(err))
       );
-    }
+  }
 
   ngOnInit() {
     this.title.setTitle(this.pageTitle);
