@@ -1,34 +1,32 @@
-<ng-template [ngIf]="auth.loggedIn">
-  <ng-template #noDog>
-    <app-loading *ngIf="loading"></app-loading>
-    <app-error *ngIf="error"></app-error>
-  </ng-template>
+<ng-template #noDog>
+  <app-loading *ngIf="loading"></app-loading>
+  <app-error *ngIf="error"></app-error>
+</ng-template>
 
-  <div *ngIf="dog$ | async; let dog; else noDog">
-    <h1 class="text-center">{{ getPageTitle(dog) }}</h1>
-    <div class="row align-items-center pt-2">
-      <div class="col-12 col-sm-6">
-        <div
-          class="dog-photo rounded mb-2 mb-sm-0"
-          [style.backgroundImage]="getImgStyle(dog.image)"></div>
-      </div>
-      <ul class="list-unstyled col-12 col-sm-6">
-        <li><strong>Group:</strong> {{ dog.group }}</li>
-        <li><strong>Personality:</strong> {{ dog.personality }}</li>
-        <li><strong>Energy Level:</strong> {{ dog.energy }}</li>
-      </ul>
+<div *ngIf="dog$ | async; let dog; else noDog">
+  <h1 class="text-center">{{ getPageTitle(dog) }}</h1>
+  <div class="row align-items-center pt-2">
+    <div class="col-12 col-sm-6">
+      <div
+        class="dog-photo rounded mb-2 mb-sm-0"
+        [style.backgroundImage]="getImgStyle(dog.image)"></div>
     </div>
-    <div class="row">
-      <div class="col">
-        <p class="lead mt-3" [innerHTML]="dog.description"></p>
-        <p class="clearfix">
-          <a routerLink="/" class="btn btn-link float-left">&larr; Back</a>
-          <a
-            class="btn btn-primary float-right"
-            [href]="dog.link"
-            target="_blank">{{ dog.breed }} AKC Info</a>
-        </p>
-      </div>
+    <ul class="list-unstyled col-12 col-sm-6">
+      <li><strong>Group:</strong> {{ dog.group }}</li>
+      <li><strong>Personality:</strong> {{ dog.personality }}</li>
+      <li><strong>Energy Level:</strong> {{ dog.energy }}</li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p class="lead mt-3" [innerHTML]="dog.description"></p>
+      <p class="clearfix">
+        <a routerLink="/" class="btn btn-link float-left">&larr; Back</a>
+        <a
+          class="btn btn-primary float-right"
+          [href]="dog.link"
+          target="_blank">{{ dog.breed }} AKC Info</a>
+      </p>
     </div>
   </div>
-</ng-template>
+</div>

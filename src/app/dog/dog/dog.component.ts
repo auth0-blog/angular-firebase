@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { AuthService } from '../../auth/auth.service';
-import { ApiService } from '../../core/api.service';
-import { Observable } from 'rxjs/Observable';
-import { map, catchError } from 'rxjs/operators';
-import { DogDetail } from './../../core/dog-detail';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ApiService } from '../../core/api.service';
+import { DogDetail } from './../../core/dog-detail';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dog',
@@ -22,22 +21,21 @@ import { Title } from '@angular/platform-browser';
   `]
 })
 export class DogComponent implements OnInit, OnDestroy {
-  routeSub: Subscription;
+  paramSub: Subscription;
   dog$: Observable<DogDetail>;
   loading = true;
   error: boolean;
 
   constructor(
     private route: ActivatedRoute,
-    public auth: AuthService,
     private api: ApiService,
     private title: Title) { }
 
   ngOnInit() {
-    this.routeSub = this.route.params
+    this.paramSub = this.route.params
       .subscribe(
         params => {
-          this.dog$ = this.api.getDogByRank$(params['rank']).pipe(
+          this.dog$ = this.api.getDogByRank$(params.rank).pipe(
             map(res => this._dataSuccess(res)),
             catchError(err => this._dataError(err))
           );
@@ -53,11 +51,7 @@ export class DogComponent implements OnInit, OnDestroy {
   private _dataError(err: any): Observable<any> {
     this.loading = false;
     this.error = true;
-    return Observable.throw('An error occurred fetching dog data.');
-  }
-
-  getImgStyle(url: string) {
-    return `url(${url})`;
+    return Observable.throw('An error occurred fetching detail data for this dog.');
   }
 
   getPageTitle(dog: DogDetail): string {
@@ -66,8 +60,12 @@ export class DogComponent implements OnInit, OnDestroy {
     return pageTitle;
   }
 
+  getImgStyle(url: string) {
+    return `url(${url})`;
+  }
+
   ngOnDestroy() {
-    this.routeSub.unsubscribe();
+    this.paramSub.unsubscribe();
   }
 
 }
