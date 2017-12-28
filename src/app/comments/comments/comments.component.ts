@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Comment } from './../comment';
 import { AuthService } from '../../auth/auth.service';
@@ -30,29 +30,31 @@ import { AuthService } from '../../auth/auth.service';
   `]
 })
 export class CommentsComponent implements OnInit {
-  private _commentsRef: AngularFireList<Comment>;
+  private _commentsCollection: AngularFirestoreCollection<Comment>;
   comments$: Observable<Comment[]>;
 
   constructor(
-    private db: AngularFireDatabase,
+    private afs: AngularFirestore,
     public auth: AuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this._commentsRef = this.db.list<Comment>('comments',
-      ref => ref.orderByChild('timestamp').limitToLast(15)
+    this._commentsCollection = this.afs.collection<Comment>('comments',
+      ref => ref.orderBy('timestamp').limit(15)
     );
-    this.comments$ = this._commentsRef.snapshotChanges().map(
-      changes => {
-        return changes.map(
-          c => ({ key: c.payload.key, ...c.payload.val() })
-        );
+    this.comments$ = this._commentsCollection.snapshotChanges().map(
+      actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as Comment;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
       }
     );
   }
 
   onPostComment(data: Comment) {
-    this._commentsRef.push(data);
+    this._commentsCollection.add(data);
   }
 
   canDeleteComment(uid: string): boolean {
@@ -62,9 +64,10 @@ export class CommentsComponent implements OnInit {
     return uid === this.auth.userProfile.sub;
   }
 
-  deleteComment(key: string) {
+  deleteComment(id: string) {
     if (window.confirm('Are you sure you want to delete your comment?')) {
-      this._commentsRef.remove(key);
+      const thisDoc: AngularFirestoreDocument<Comment> = this.afs.doc<Comment>(`comments/${id}`);
+      thisDoc.delete();
     }
   }
 

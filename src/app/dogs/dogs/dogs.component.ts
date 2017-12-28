@@ -17,11 +17,12 @@ export class DogsComponent implements OnInit {
 
   constructor(
     private title: Title,
-    private api: ApiService) {
-      this.dogsList$ = api.getDogs$().pipe(
-        map(res => this._dataSuccess(res)),
-        catchError(err => this._dataError(err))
-      );
+    private api: ApiService
+  ) {
+    this.dogsList$ = api.getDogs$().pipe(
+      map(res => this._dataSuccess(res)),
+      catchError(err => this._dataError(err))
+    );
   }
 
   ngOnInit() {

@@ -29,7 +29,8 @@ export class DogComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private api: ApiService,
-    private title: Title) { }
+    private title: Title
+  ) { }
 
   ngOnInit() {
     this.paramSub = this.route.params
