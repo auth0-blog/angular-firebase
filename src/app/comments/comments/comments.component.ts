@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Comment } from './../comment';
@@ -29,19 +29,20 @@ import { AuthService } from '../../auth/auth.service';
     }
   `]
 })
-export class CommentsComponent implements OnInit {
+export class CommentsComponent {
   private _commentsCollection: AngularFirestoreCollection<Comment>;
   comments$: Observable<Comment[]>;
 
   constructor(
     private afs: AngularFirestore,
     public auth: AuthService
-  ) {}
-
-  ngOnInit() {
-    this._commentsCollection = this.afs.collection<Comment>('comments',
+  ) {
+    // Get latest 15 comments from Firestore, ordered by timestamp
+    this._commentsCollection = afs.collection<Comment>(
+      'comments',
       ref => ref.orderBy('timestamp').limit(15)
     );
+    // Add Firestore ID to comments
     this.comments$ = this._commentsCollection.snapshotChanges().map(
       actions => {
         return actions.map(a => {
@@ -53,8 +54,10 @@ export class CommentsComponent implements OnInit {
     );
   }
 
-  onPostComment(data: Comment) {
-    this._commentsCollection.add(data);
+  onPostComment(comment: Comment) {
+    // Unwrap the Comment instance to an object for Firestore
+    const commentObj = <Comment>comment.getObj;
+    this._commentsCollection.add(commentObj);
   }
 
   canDeleteComment(uid: string): boolean {
