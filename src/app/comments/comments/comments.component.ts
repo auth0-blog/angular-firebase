@@ -43,6 +43,7 @@ export class CommentsComponent {
       ref => ref.orderBy('timestamp').limit(15)
     );
     // Add Firestore ID to comments
+    // The ID is necessary to delete comments
     this.comments$ = this._commentsCollection.snapshotChanges().map(
       actions => {
         return actions.map(a => {
@@ -56,6 +57,7 @@ export class CommentsComponent {
 
   onPostComment(comment: Comment) {
     // Unwrap the Comment instance to an object for Firestore
+    // See https://github.com/firebase/firebase-js-sdk/issues/311
     const commentObj = <Comment>comment.getObj;
     this._commentsCollection.add(commentObj);
   }
@@ -68,6 +70,7 @@ export class CommentsComponent {
   }
 
   deleteComment(id: string) {
+    // Delete comment with confirmation prompt first
     if (window.confirm('Are you sure you want to delete your comment?')) {
       const thisDoc: AngularFirestoreDocument<Comment> = this.afs.doc<Comment>(`comments/${id}`);
       thisDoc.delete();
