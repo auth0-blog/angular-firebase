@@ -43,16 +43,17 @@ export class CommentsComponent {
       ref => ref.orderBy('timestamp').limit(15)
     );
     // Add Firestore ID to comments
-    // The ID is necessary to delete comments
-    this.comments$ = this._commentsCollection.snapshotChanges().map(
-      actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data() as Comment;
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      }
-    );
+    // The ID is necessary to delete specific comments
+    this.comments$ = this._commentsCollection.snapshotChanges()
+      .map(
+        actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data() as Comment;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          });
+        }
+      );
   }
 
   onPostComment(comment: Comment) {
