@@ -1,37 +1,20 @@
 import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import { map, catchError } from 'rxjs/operators';
 import { Comment } from './../comment';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
-  styles: [`
-    .avatar {
-      display: inline-block;
-      height: 30px;
-    }
-    .comment-text {
-      background: #eee;
-      position: relative;
-    }
-    .comment-text::before {
-      border-bottom: 10px solid #eee;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      content: '';
-      display: block;
-      height: 1px;
-      position: absolute;
-        top: -10px; left: 9px;
-      width: 1px;
-    }
-  `]
+  styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent {
   private _commentsCollection: AngularFirestoreCollection<Comment>;
   comments$: Observable<Comment[]>;
+  loading = true;
+  error: boolean;
 
   constructor(
     private afs: AngularFirestore,
@@ -42,18 +25,31 @@ export class CommentsComponent {
       'comments',
       ref => ref.orderBy('timestamp').limit(15)
     );
+    // Set up observable of comments
+    this.comments$ = this._commentsCollection.snapshotChanges()
+      .pipe(
+        map(res => this._dataSuccess(res)),
+        catchError(err => this._dataError(err))
+      );
+  }
+
+  private _dataSuccess(res) {
+    this.loading = false;
+    this.error = false;
+    console.log('data emitted');
     // Add Firestore ID to comments
     // The ID is necessary to delete specific comments
-    this.comments$ = this._commentsCollection.snapshotChanges()
-      .map(
-        actions => {
-          return actions.map(a => {
-            const data = a.payload.doc.data() as Comment;
-            const id = a.payload.doc.id;
-            return { id, ...data };
-          });
-        }
-      );
+    return res.map(action => {
+      const data = action.payload.doc.data() as Comment;
+      const id = action.payload.doc.id;
+      return { id, ...data };
+    });
+  }
+
+  private _dataError(err: any): Observable<any> {
+    this.loading = false;
+    this.error = true;
+    return Observable.throw('An error occurred while retrieving comments.');
   }
 
   onPostComment(comment: Comment) {

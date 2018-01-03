@@ -1,13 +1,14 @@
 <section class="comments py-3">
   <h3>Comments</h3>
 
-  <ng-template #loading>
-    <p class="lead">
+  <ng-template #noComments>
+    <p class="lead" *ngIf="loading">
       <app-loading [inline]="true"></app-loading>Loading comments...
     </p>
+    <app-error *ngIf="error"></app-error>
   </ng-template>
 
-  <div *ngIf="comments$ | async; let commentsList; else loading">
+  <div *ngIf="comments$ | async; let commentsList; else noComments">
     <ul class="list-unstyled">
       <li *ngFor="let comment of commentsList" class="pt-2">
         <div class="row mb-1">
@@ -26,9 +27,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <p class="comment-text rounded p-2 my-2">
-              {{ comment.text }}
-            </p>
+            <p class="comment-text rounded p-2 my-2" [innerHTML]="comment.text"></p>
           </div>
         </div>
       </li>

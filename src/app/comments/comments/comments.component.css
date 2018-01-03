@@ -1,0 +1,19 @@
+.avatar {
+  display: inline-block;
+  height: 30px;
+}
+.comment-text {
+  background: #eee;
+  position: relative;
+}
+.comment-text::before {
+  border-bottom: 10px solid #eee;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  content: '';
+  display: block;
+  height: 1px;
+  position: absolute;
+    top: -10px; left: 9px;
+  width: 1px;
+}
