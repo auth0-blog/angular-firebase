@@ -4,8 +4,7 @@ import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-comment-form',
-  templateUrl: './comment-form.component.html',
-  styles: []
+  templateUrl: './comment-form.component.html'
 })
 export class CommentFormComponent implements OnInit {
   @Output() postComment = new EventEmitter<Comment>();
