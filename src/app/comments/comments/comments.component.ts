@@ -36,7 +36,6 @@ export class CommentsComponent {
   private _dataSuccess(res) {
     this.loading = false;
     this.error = false;
-    console.log('data emitted');
     // Add Firestore ID to comments
     // The ID is necessary to delete specific comments
     return res.map(action => {
