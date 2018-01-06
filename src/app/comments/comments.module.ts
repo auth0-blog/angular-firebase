@@ -10,7 +10,7 @@ import { CommentFormComponent } from './comments/comment-form/comment-form.compo
 @NgModule({
   imports: [
     CommonModule,
-    CoreModule, // Import FormsModule and Loading component
+    CoreModule, // Access FormsModule, Loading, and Error components
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
