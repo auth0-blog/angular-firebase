@@ -21,7 +21,7 @@ export class ApiService {
     return this.http
       .get(`${this._API}/dogs`)
       .pipe(
-        catchError(this._handleError)
+        catchError((err, caught) => this._onError(err, caught))
       );
   }
 
@@ -31,15 +31,18 @@ export class ApiService {
         headers: new HttpHeaders().set('Authorization', `Bearer ${this._accessToken}`)
       })
       .pipe(
-        catchError(this._handleError)
+        catchError((err, caught) => this._onError(err, caught))
       );
   }
 
-  private _handleError(err: HttpErrorResponse | any) {
-    const errorMsg = err.message || 'Error: Unable to complete request.';
-    if (err.message && err.message.indexOf('No JWT present') > -1 || err.message.indexOf('UnauthorizedError') > -1) {
-      this.auth.logout();
-      this.auth.login();
+  private _onError(err, caught) {
+    let errorMsg = 'Error: Unable to complete request.';
+    if (err instanceof HttpErrorResponse) {
+      errorMsg = err.message;
+      if (errorMsg.indexOf('No JWT') > -1 || errorMsg.indexOf('Unauthorized') > -1) {
+        this.auth.logout();
+        this.auth.login();
+      }
     }
     return Observable.throw(errorMsg);
   }

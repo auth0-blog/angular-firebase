@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ApiService } from '../../core/api.service';
 import { Dog } from './../../core/dog';
 import { Observable } from 'rxjs/Observable';
-import { map, catchError } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dogs',
@@ -20,8 +20,8 @@ export class DogsComponent implements OnInit {
     private api: ApiService
   ) {
     this.dogsList$ = api.getDogs$().pipe(
-      map(res => this._dataSuccess(res)),
-      catchError(err => this._dataError(err))
+      tap(val => this._onNext(val)),
+      catchError((err, caught) => this._onError(err, caught))
     );
   }
 
@@ -29,12 +29,11 @@ export class DogsComponent implements OnInit {
     this.title.setTitle(this.pageTitle);
   }
 
-  private _dataSuccess(res: Dog[]): Dog[] {
+  private _onNext(val: Dog[]) {
     this.loading = false;
-    return res;
   }
 
-  private _dataError(err: any): Observable<any> {
+  private _onError(err, caught): Observable<any> {
     this.loading = false;
     this.error = true;
     return Observable.throw('An error occurred fetching dogs data.');

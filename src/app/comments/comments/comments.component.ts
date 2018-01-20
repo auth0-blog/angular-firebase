@@ -28,12 +28,12 @@ export class CommentsComponent {
     // Set up observable of comments
     this.comments$ = this._commentsCollection.snapshotChanges()
       .pipe(
-        map(res => this._dataSuccess(res)),
-        catchError(err => this._dataError(err))
+        map(res => this._onNext(res)),
+        catchError((err, caught) => this._onError(err, caught))
       );
   }
 
-  private _dataSuccess(res) {
+  private _onNext(res) {
     this.loading = false;
     this.error = false;
     // Add Firestore ID to comments
@@ -45,7 +45,7 @@ export class CommentsComponent {
     });
   }
 
-  private _dataError(err: any): Observable<any> {
+  private _onError(err, caught): Observable<any> {
     this.loading = false;
     this.error = true;
     return Observable.throw('An error occurred while retrieving comments.');

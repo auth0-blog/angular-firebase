@@ -5,7 +5,7 @@ import { ApiService } from '../../core/api.service';
 import { DogDetail } from './../../core/dog-detail';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { map, catchError } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dog',
@@ -37,19 +37,18 @@ export class DogComponent implements OnInit, OnDestroy {
       .subscribe(
         params => {
           this.dog$ = this.api.getDogByRank$(params.rank).pipe(
-            map(res => this._dataSuccess(res)),
-            catchError(err => this._dataError(err))
+            tap(val => this._onNext(val)),
+            catchError((err, caught) => this._onError(err, caught))
           );
         }
       );
   }
 
-  private _dataSuccess(res: DogDetail): DogDetail {
+  private _onNext(val: DogDetail) {
     this.loading = false;
-    return res;
   }
 
-  private _dataError(err: any): Observable<any> {
+  private _onError(err, caught): Observable<any> {
     this.loading = false;
     this.error = true;
     return Observable.throw('An error occurred fetching detail data for this dog.');

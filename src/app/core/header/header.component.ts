@@ -9,27 +9,13 @@ import { AuthService } from '../../auth/auth.service';
       border-radius: 100px;
       width: 30px;
     }
-    .loading {
-      line-height: 31px;
-    }
-    .home-link {
-      color: #212529;
-    }
-    .home-link:hover {
-      text-decoration: none;
-    }
+    .loading { line-height: 31px; }
+    .home-link { color: #212529; }
+    .home-link:hover { text-decoration: none; }
   `]
 })
 export class HeaderComponent {
 
   constructor(public auth: AuthService) {}
-
-  get showLogin(): boolean {
-    return !this.auth.loggedIn && this.auth.loggedIn !== null;
-  }
-
-  get loggingIn(): boolean {
-    return this.auth.loggedIn === null;
-  }
 
 }

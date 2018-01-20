@@ -3,19 +3,21 @@
     <strong class="mr-1"><a routerLink="/" class="home-link">Popular Dogs ❤</a></strong>
   </div>
   <div class="ml-3">
-    <button
-      *ngIf="showLogin"
-      class="btn btn-primary btn-sm"
-      (click)="auth.login()">Log In</button>
-    <small *ngIf="loggingIn" class="loading">
+    <small *ngIf="auth.loading" class="loading">
       Logging in...
     </small>
-    <span *ngIf="auth.loggedIn">
-      <img [src]="auth.userProfile.picture">
-      <small>{{ auth.userProfile.name }}</small>
+    <ng-template [ngIf]="!auth.loading">
       <button
-        class="btn btn-danger btn-sm"
-        (click)="auth.logout()">Log Out</button>
-    </span>
+        *ngIf="!auth.loggedIn"
+        class="btn btn-primary btn-sm"
+        (click)="auth.login()">Log In</button>
+      <span *ngIf="auth.loggedIn">
+        <img [src]="auth.userProfile.picture">
+        <small>{{ auth.userProfile.name }}</small>
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="auth.logout()">Log Out</button>
+      </span>
+    </ng-template>
   </div>
 </nav>

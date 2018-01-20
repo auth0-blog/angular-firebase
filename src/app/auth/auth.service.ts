@@ -25,6 +25,7 @@ export class AuthService {
   userProfile: any;
   // Track authentication status
   loggedIn: boolean;
+  loading: boolean;
   // Track Firebase authentication status
   loggedInFirebase: boolean;
   // Subscribe to the Firebase token stream
@@ -59,7 +60,7 @@ export class AuthService {
   }
 
   handleAuth() {
-    this.loggedIn = null;
+    this.loading = true;
     // When Auth0 hash parsed, get profile
     this._auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken) {
@@ -69,7 +70,7 @@ export class AuthService {
         this._getProfile(authResult);
       } else if (err) {
         this.router.navigate(['/']);
-        this.loggedIn = false;
+        this.loading = false;
         console.error(`Error authenticating: ${err.error}`);
       }
     });
@@ -95,8 +96,9 @@ export class AuthService {
     // Set profile information
     localStorage.setItem('profile', JSON.stringify(profile));
     this.userProfile = profile;
-    // Session set; set loggedIn
+    // Session set; set loggedIn and loading
     this.loggedIn = true;
+    this.loading = false;
     // Redirect to desired route
     this.router.navigate([localStorage.getItem('auth_redirect')]);
   }
