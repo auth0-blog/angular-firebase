@@ -39,8 +39,7 @@ export class ApiService {
     let errorMsg = 'Error: Unable to complete request.';
     if (err instanceof HttpErrorResponse) {
       errorMsg = err.message;
-      if (errorMsg.indexOf('No JWT') > -1 || errorMsg.indexOf('Unauthorized') > -1) {
-        this.auth.logout();
+      if (err.status === 401 || errorMsg.indexOf('No JWT') > -1 || errorMsg.indexOf('Unauthorized') > -1) {
         this.auth.login();
       }
     }
