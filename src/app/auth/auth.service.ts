@@ -66,7 +66,7 @@ export class AuthService {
     });
   }
 
-  private getUserInfo(authResult) {
+  getUserInfo(authResult) {
     // Use access token to retrieve user's profile and set session
     this._auth0.client.userInfo(this.accessToken, (err, profile) => {
       if (profile) {
