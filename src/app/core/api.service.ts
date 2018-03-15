@@ -11,7 +11,6 @@ import { DogDetail } from './../core/dog-detail';
 @Injectable()
 export class ApiService {
   private _API = `${environment.apiRoot}api`;
-  private _accessToken = localStorage.getItem('access_token');
 
   constructor(
     private http: HttpClient,
@@ -28,7 +27,7 @@ export class ApiService {
   getDogByRank$(rank: number): Observable<DogDetail> {
     return this.http
       .get(`${this._API}/dog/${rank}`, {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${this._accessToken}`)
+        headers: new HttpHeaders().set('Authorization', `Bearer ${this.auth.accessToken}`)
       })
       .pipe(
         catchError((err, caught) => this._onError(err, caught))

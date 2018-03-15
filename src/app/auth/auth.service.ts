@@ -22,6 +22,7 @@ export class AuthService {
     audience: environment.auth.audience,
     scope: environment.auth.scope
   });
+  accessToken: string;
   userProfile: any;
   // Track authentication status
   loggedIn: boolean;
@@ -36,20 +37,7 @@ export class AuthService {
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
-    private http: HttpClient) {
-      // If authenticated, set local profile property and get new Firebase token.
-      // If not authenticated but there are still items in localStorage, log out.
-      const lsProfile = localStorage.getItem('profile');
-      const lsToken = localStorage.getItem('access_token');
-
-      if (this.tokenValid) {
-        this.userProfile = JSON.parse(lsProfile);
-        this.loggedIn = true;
-        this._getFirebaseToken(lsToken);
-      } else if (!this.tokenValid && lsProfile) {
-        this.logout();
-      }
-  }
+    private http: HttpClient) {}
 
   login(redirect?: string) {
     // Set redirect after login
@@ -65,8 +53,6 @@ export class AuthService {
     this._auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken) {
         window.location.hash = '';
-        // Get Firebase token
-        this._getFirebaseToken(authResult.accessToken);
         this._getProfile(authResult);
       } else if (err) {
         this.router.navigate(['/']);
@@ -90,14 +76,15 @@ export class AuthService {
   private _setSession(authResult, profile) {
     // Set tokens and expiration in localStorage
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + Date.now());
-    localStorage.setItem('access_token', authResult.accessToken);
+    this.accessToken = authResult.accessToken;
     localStorage.setItem('expires_at', expiresAt);
-    // Set profile information
-    localStorage.setItem('profile', JSON.stringify(profile));
     this.userProfile = profile;
     // Session set; set loggedIn and loading
     this.loggedIn = true;
     this.loading = false;
+    // Get Firebase token
+    this._getFirebaseToken(authResult.accessToken);
+
     // Redirect to desired route
     this.router.navigate([localStorage.getItem('auth_redirect')]);
   }
