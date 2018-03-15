@@ -7,8 +7,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/observable/timer'; // Using lettable { timer } produces a type error
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/timer';
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class AuthService {
   private _auth0 = new auth0.WebAuth({
     clientID: environment.auth.clientId,
     domain: environment.auth.clientDomain,
-    responseType: 'token id_token',
+    responseType: 'token',
     redirectUri: environment.auth.redirect,
     audience: environment.auth.audience,
     scope: environment.auth.scope
@@ -91,7 +91,6 @@ export class AuthService {
     // Set tokens and expiration in localStorage
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + Date.now());
     localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     // Set profile information
     localStorage.setItem('profile', JSON.stringify(profile));
