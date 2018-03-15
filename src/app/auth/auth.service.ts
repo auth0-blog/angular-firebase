@@ -88,7 +88,7 @@ export class AuthService {
     // Get Firebase token
     this._getFirebaseToken();
     // Redirect to desired route
-    this.router.navigate([localStorage.getItem('auth_redirect')]);
+    this.router.navigateByUrl(localStorage.getItem('auth_redirect'));
   }
 
   private _getFirebaseToken() {

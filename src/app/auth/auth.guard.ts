@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.auth.tokenValid) {
+    if (this.auth.loggedIn) {
       return true;
     } else {
       // Send guarded route to redirect after logging in
