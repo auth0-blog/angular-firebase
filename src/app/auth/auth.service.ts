@@ -37,7 +37,8 @@ export class AuthService {
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
-    private http: HttpClient) {}
+    private http: HttpClient
+  ) {}
 
   login(redirect?: string) {
     // Set redirect after login
@@ -47,13 +48,16 @@ export class AuthService {
     this._auth0.authorize();
   }
 
-  handleAuth() {
+  handleLoginCallback() {
     this.loading = true;
     // When Auth0 hash parsed, get profile
     this._auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken) {
         window.location.hash = '';
-        this._getProfile(authResult);
+        // Store access token
+        this.accessToken = authResult.accessToken;
+        // Get user info: set up session, get Firebase token
+        this.getUserInfo(authResult);
       } else if (err) {
         this.router.navigate(['/']);
         this.loading = false;
@@ -62,9 +66,9 @@ export class AuthService {
     });
   }
 
-  private _getProfile(authResult) {
+  private getUserInfo(authResult) {
     // Use access token to retrieve user's profile and set session
-    this._auth0.client.userInfo(authResult.accessToken, (err, profile) => {
+    this._auth0.client.userInfo(this.accessToken, (err, profile) => {
       if (profile) {
         this._setSession(authResult, profile);
       } else if (err) {
@@ -76,28 +80,26 @@ export class AuthService {
   private _setSession(authResult, profile) {
     // Set tokens and expiration in localStorage
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + Date.now());
-    this.accessToken = authResult.accessToken;
     localStorage.setItem('expires_at', expiresAt);
     this.userProfile = profile;
     // Session set; set loggedIn and loading
     this.loggedIn = true;
     this.loading = false;
     // Get Firebase token
-    this._getFirebaseToken(authResult.accessToken);
-
+    this._getFirebaseToken();
     // Redirect to desired route
     this.router.navigate([localStorage.getItem('auth_redirect')]);
   }
 
-  private _getFirebaseToken(accessToken) {
-    // Detect if no valid access token passed into this method
-    if (!accessToken) {
+  private _getFirebaseToken() {
+    // Prompt for login if no access token
+    if (!this.accessToken) {
       this.login();
     }
     const getToken$ = () => {
       return this.http
         .get(`${environment.apiRoot}auth/firebase`, {
-          headers: new HttpHeaders().set('Authorization', `Bearer ${accessToken}`)
+          headers: new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`)
         });
     };
     this.firebaseSub = getToken$().subscribe(
@@ -153,7 +155,7 @@ export class AuthService {
       .subscribe(
         () => {
           console.log('Firebase token expired; fetching a new one');
-          this._getFirebaseToken(localStorage.getItem('access_token'));
+          this._getFirebaseToken();
         }
       );
   }
@@ -165,11 +167,10 @@ export class AuthService {
   }
 
   logout() {
-    // Ensure all auth items removed from localStorage
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('profile');
+    // Ensure all auth items removed
     localStorage.removeItem('expires_at');
     localStorage.removeItem('auth_redirect');
+    this.accessToken = undefined;
     this.userProfile = undefined;
     this.loggedIn = false;
     // Sign out of Firebase
@@ -182,7 +183,6 @@ export class AuthService {
   get tokenValid(): boolean {
     // Check if current time is past access token's expiration
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    const tokenValid = Date.now() < expiresAt;
     return Date.now() < expiresAt;
   }
 

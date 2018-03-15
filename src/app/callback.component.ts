@@ -12,7 +12,7 @@ export class CallbackComponent implements OnInit {
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
-    this.auth.handleAuth();
+    this.auth.handleLoginCallback();
   }
 
 }
