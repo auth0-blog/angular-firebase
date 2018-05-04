@@ -4,7 +4,7 @@ import { environment } from './../../environments/environment';
 import { AuthService } from './../auth/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
+import { _throw } from 'rxjs/observable/throw';
 import { Dog } from './../core/dog';
 import { DogDetail } from './../core/dog-detail';
 
@@ -42,7 +42,7 @@ export class ApiService {
         this.auth.login();
       }
     }
-    return Observable.throw(errorMsg);
+    return _throw(errorMsg);
   }
 
 }
