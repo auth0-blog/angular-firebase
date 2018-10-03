@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ApiService } from '../../core/api.service';
 import { Dog } from './../../core/dog';
-import { Observable } from 'rxjs/Observable';
+import { throwError, Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 @Component({
@@ -36,7 +36,7 @@ export class DogsComponent implements OnInit {
   private _onError(err, caught): Observable<any> {
     this.loading = false;
     this.error = true;
-    return Observable.throw('An error occurred fetching dogs data.');
+    return throwError('An error occurred fetching dogs data.');
   }
 
 }

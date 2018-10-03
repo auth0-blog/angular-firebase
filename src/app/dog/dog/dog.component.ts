@@ -3,8 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ApiService } from '../../core/api.service';
 import { DogDetail } from './../../core/dog-detail';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { throwError, Subscription, Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 @Component({
@@ -51,7 +50,7 @@ export class DogComponent implements OnInit, OnDestroy {
   private _onError(err, caught): Observable<any> {
     this.loading = false;
     this.error = true;
-    return Observable.throw('An error occurred fetching detail data for this dog.');
+    return throwError('An error occurred fetching detail data for this dog.');
   }
 
   getPageTitle(dog: DogDetail): string {

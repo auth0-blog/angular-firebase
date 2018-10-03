@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { throwError, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Comment } from './../comment';
 import { AuthService } from '../../auth/auth.service';
@@ -48,7 +48,7 @@ export class CommentsComponent {
   private _onError(err, caught): Observable<any> {
     this.loading = false;
     this.error = true;
-    return Observable.throw('An error occurred while retrieving comments.');
+    return throwError('An error occurred while retrieving comments.');
   }
 
   onPostComment(comment: Comment) {
