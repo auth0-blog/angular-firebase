@@ -2,13 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 import * as auth0 from 'auth0-js';
-import * as firebase from 'firebase/app';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { timer } from 'rxjs/observable/timer';
+import { Subscription, of, timer } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
